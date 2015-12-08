@@ -1,6 +1,8 @@
 
 
-
+module.exports = { 
+    BigNum: BigNum,
+};
 
 function BigNum(   ) {
 
@@ -39,7 +41,7 @@ BigNum.prototype.convertString = function( stringIn ) {
         var stringOut   = "";
         var intLocal  = 0;
 
-        smallString = binUnderTen( parseInt(locNum[0]) ) );
+        smallString = binUnderTen( parseInt(locNum[0]) );
         if( len > 1) {
             largeString = convPlace( parseInt( locNum.subStr(1) ) * 5, 2 );
             largeString.unshift( 0 );
@@ -75,4 +77,12 @@ BigNum.prototype.convertString = function( stringIn ) {
         return stringOut;
     }
     this.binString = convPlace( stringIn, 0);
+}
+BigNum.prototype.toStringBin  = function( ) {
+    var retString = "";
+    var i;
+    for(i = this.binString.length - 1; i >= 0; i--) {
+        retString += this.binString[i];
+    }
+    return retString;
 }
