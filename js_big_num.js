@@ -74,4 +74,5 @@ BigNum.prototype.convertString = function( stringIn ) {
         }
         return stringOut;
     }
+    this.binString = convPlace( stringIn, 0);
 }
