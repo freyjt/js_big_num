@@ -31,60 +31,33 @@ BigNum.prototype.convertString = function( stringIn ) {
 
     //helper function, converts a string to a binary string
     // numberIn should never be > 45
-    function convPlace( numberIn, place ) {
+    var arrBins     = []; //yup
+    function convPlace( numberIn, lead ) {
         console.log("Call here");
         var locNum    = numberIn.toString();
         var len       = locNum.length;
-        var numHolder = "";
-        var i;
-        for(i = len - 1; i >= 0; i--) {
-            numHolder += locNum[i];
-        }
-        locNum = numHolder;
-        // delete numHolder;
-        
-        var smallString = "";
-        var largeString = "";
-        var stringOut   = "";
-        var intLocal  = 0;
 
-        smallString = binUnderTen( parseInt(locNum[0]) );
-        if( len > 1) {
-            largeString = convPlace( parseInt( locNum.substring(1) ) * 5, 2 );
-            largeString = '0' + largeString;
-            //addStrings
-            var maxLen  = (smallString.length > largeString.length) ? smallString.length : largeString.length;
-            var carrier = 0;
-            var one, two, summer;
-            for( i = 0; i < maxLen; i++) {
-                if(typeof(largeString[i]) !== 'undefined'){ one = parseInt(largeString[i]); }
-                else                                      { one = 0;                        }
-                if(typeof(smallString[i]) !== 'undefined'){ two = parseInt(smallString[i]); }
-                else                                      { two = 0;                        }
-                summer = one + two + carrier;
-                if( summer == 0 || summer == 1 ) {
-                    stringOut += summer.toString();
-                    carrier = 0;
-                } else if ( summer == 2 ) {
-                    stringOut += '0';
-                    carrier = 1;
-                } else if ( summer == 3 ) {
-                    stringOut += '1';
-                    carrier = 1;
-                } else {
-                    console.log("ERROR: I don't know what happened, conversion algorithm is wrong.")
-                }
-            }
-            if( carrier == 1 ) {
-                stringOut += '1';
-            }
-        } else {
-            stringOut = smallString;
+
+        // delete numHolder    
+        var stringOut   = "";
+        // pick out last digit
+        var lastDigi = locNum[len - 1];
+        arrBins.push( lead + binUnderTen(lastDigi) );
+
+        if( len > 1 ) {
+            var sub = parseInt(locNum.substring(0, len - 1));
+            convPlace(sub * 5, '0' + lead );
         }
-        return stringOut;
     }
 
-    this.binString = convPlace( stringIn, 0);
+    convPlace( stringIn, '');
+
+    var stringRep = "";
+    var i;
+    for(i = 0; i < arrBins.length; i++) {
+        stringRep = this.addTwoBinStrings(stringRep, arrBins[i]);
+    }
+    this.binString = stringRep;
 }
 BigNum.prototype.toStringBin  = function( ) {
     var retString = "";
@@ -93,4 +66,29 @@ BigNum.prototype.toStringBin  = function( ) {
         retString += this.binString[i];
     }
     return retString;
+}
+BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
+    var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
+    var i = 0;
+    var one, two, summer;
+    var remainder = 0;
+    var retStr    = ""
+    for(i = 0; i < maxLen; i++) {
+        if(typeof(strOne[i]) !== 'undefined') { one = parseInt(strOne[i]); }
+        else                                  { one = 0;                   }
+        if(typeof(strTwo[i]) !== 'undefined') { two = parseInt(strTwo[i]); }
+        else                                  { two = 0;                   }
+        summer = remainder + one + two;
+        if( summer == 0 || summer == 1) {
+            retStr    += summer;
+            remainder  = 0;
+        } else if (summer == 2) {
+            retStr    += 0;
+            remainder  = 1;
+        } else if( summer == 3) {
+            retStr    += 1;
+            remainder  = 1;
+        }
+    }
+    return retStr;
 }
