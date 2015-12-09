@@ -32,6 +32,10 @@ function driver( ) {
     //     counter += 1;
     // }
     console.log( counter);
+
+    num.convertString( 67 );
+    num.multiply( num2 );
+    console.log("mult: " + num.toStringBin() );
 }
 
 driver();

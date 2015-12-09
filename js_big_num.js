@@ -61,6 +61,8 @@ BigNum.prototype.convertString = function( stringIn ) {
     }
     this.binString = stringRep;
 }
+
+//Returns string lsb in rightmost place
 BigNum.prototype.toStringBin  = function( ) {
     var retString = "";
     var i;
@@ -92,6 +94,7 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
             remainder  = 1;
         }
     }
+    if( remainder == 1 ) retStr += 1;
     return retStr;
 }
 BigNum.prototype.increment = function( ) {
@@ -131,13 +134,18 @@ BigNum.prototype.decrement = function( ) {
         }
     } else { 
         //@TODO teach it zero
-        console.log("Error: cannot decrement past zero value yet.");
+        // console.log("Error: cannot decrement past zero value yet.");
     }
     return !isZero;
 }
+
+// Returns raw string
 BigNum.prototype.getBinString = function( ) {
     return this.binString;
 }
+
+//Once more robust typechecking is in place we can consolidate these to one 'overloaded'
+// method
 BigNum.prototype.addBigNum = function( BigNumIn ){
     //@TODO typecheck BigNumIn
     var stringIn   = BigNumIn.getBinString( );
@@ -149,5 +157,40 @@ BigNum.prototype.addNumber = function(numberIn) {
         this.binString = this.addTwoBinStrings(this.binString, locBig);
     } else {
         console.log("Error: improper var passed to BigNum.addNumber, needs string or number.");
+    }
+}
+BigNum.prototype.setBinString = function( binStringIn ) {
+    var validString = true;
+    if(typeof(binStringIn) !== 'string') {
+        validString = false;
+    }
+    if(validString === true) {
+        for(var i = 0; i < binStringIn.length; i++) {
+            if(binStringIn[i] !== '0' && binStringIn[i] !== '1') {
+                validString = false;
+                break;
+            } 
+        }
+    }
+    if(validString == true) {
+        this.binString = binStringIn;
+    } else {
+        console.log("Error: invalid string passed to BigNum.setBinString. String unchanged");
+    }
+}
+BigNum.prototype.multiply = function(numberIn) {
+    
+    //@TODO instance check numberIn
+    if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
+        var times = new BigNum( numberIn );
+    } else {
+        var times = new BigNum(  );
+        times.setBinString( numberIn.getBinString() );
+    }
+    var adder = this.getBinString();
+    times.decrement(); //--returns false @ zero, so -1
+    while( times.decrement() ){
+        // console.log( "adding   " + this.binString  + ":" + adder);
+        this.binString = this.addTwoBinStrings(this.binString, adder);
     }
 }
