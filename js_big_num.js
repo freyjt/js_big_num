@@ -24,7 +24,7 @@ BigNum.prototype.convertString = function( stringIn ) {
                 num       -= i;
             } else { stringOut = '0' + stringOut; }
         }
-        console.log("binUnderTen:   " + numberIn + " : " + stringOut);
+        
         return stringOut;
     }
 
@@ -33,7 +33,7 @@ BigNum.prototype.convertString = function( stringIn ) {
     // numberIn should never be > 45
     var arrBins     = []; //yup
     function convPlace( numberIn, lead ) {
-        console.log("Call here");
+
         var locNum    = numberIn.toString();
         var len       = locNum.length;
 

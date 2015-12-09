@@ -10,6 +10,10 @@ function driver( ) {
     console.log(num.toStringBin());
     num.convertString('555');
     console.log(num.toStringBin());
+    num.convertString('575960');
+    console.log(num.toStringBin());
+    num.convertString('8');
+    console.log(num.toStringBin());
 
 }
 
