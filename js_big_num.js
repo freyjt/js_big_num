@@ -4,9 +4,12 @@ module.exports = {
     BigNum: BigNum,
 };
 
-function BigNum(   ) {
+function BigNum( numberIn ) {
 
     this.binString = "";
+    if( typeof(numberIn) !== 'undefined' ) {
+        this.convertString( numberIn.toString() );
+    }
 
 }
 
@@ -36,7 +39,6 @@ BigNum.prototype.convertString = function( stringIn ) {
 
         var locNum    = numberIn.toString();
         var len       = locNum.length;
-
 
         // delete numHolder    
         var stringOut   = "";
@@ -129,7 +131,23 @@ BigNum.prototype.decrement = function( ) {
         }
     } else { 
         //@TODO teach it zero
-        console.log("Error: cannot decrement zero value yet.");
+        console.log("Error: cannot decrement past zero value yet.");
     }
     return !isZero;
+}
+BigNum.prototype.getBinString = function( ) {
+    return this.binString;
+}
+BigNum.prototype.addBigNum = function( BigNumIn ){
+    //@TODO typecheck BigNumIn
+    var stringIn   = BigNumIn.getBinString( );
+    this.binString = this.addTwoBinStrings(this.binString, stringIn);
+}
+BigNum.prototype.addNumber = function(numberIn) {
+    if( typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
+        var locBig = new BigNum( numberIn.toString() ).getBinString();
+        this.binString = this.addTwoBinStrings(this.binString, locBig);
+    } else {
+        console.log("Error: improper var passed to BigNum.addNumber, needs string or number.");
+    }
 }
