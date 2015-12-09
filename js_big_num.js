@@ -99,12 +99,37 @@ BigNum.prototype.increment = function( ) {
         present = parseInt(this.binString[i]) + remainder;
         if( present == 1 ) {
             //it's because of hackey stuff like this that you should be using an array
-            this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i+1);
+            this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i + 1);
             remainder      =  0 ;
             break;
         } else if( present == 2 ) {
-            this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i+1);
+            this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i + 1);
         }
     }
     if(remainder == 1) { this.binString += '1'; }
+}
+BigNum.prototype.decrement = function( ) {
+    //flip all bits until we get to a one... and flip that
+    var isZero = true;
+    var i;
+    for( i = 0; i < this.binString.length; i++) {
+        if(this.binString[i] == '1') {
+            isZero = false;
+            break;
+        }
+    }
+    if(isZero == false) {
+        for( i = 0; i < this.binString.length; i++) {
+            if(this.binString[i] == '1') {
+                this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i + 1);
+                break;
+            } else {
+                this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i + 1);
+            }
+        }
+    } else { 
+        //@TODO teach it zero
+        console.log("Error: cannot decrement zero value yet.");
+    }
+    return !isZero;
 }

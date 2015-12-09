@@ -20,6 +20,13 @@ function driver( ) {
         num.increment();
        
     }
+    num.convertString("500");
+    var counter = 0;
+    while( num.decrement() == true) {
+        console.log(num.toStringBin());
+        counter += 1;
+    }
+    console.log( counter);
 }
 
 driver();
