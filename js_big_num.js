@@ -92,3 +92,19 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
     }
     return retStr;
 }
+BigNum.prototype.increment = function( ) {
+
+    var remainder = 1; //incrementing by this many
+    for(var i = 0; i < this.binString.length; i++) {
+        present = parseInt(this.binString[i]) + remainder;
+        if( present == 1 ) {
+            //it's because of hackey stuff like this that you should be using an array
+            this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i+1);
+            remainder      =  0 ;
+            break;
+        } else if( present == 2 ) {
+            this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i+1);
+        }
+    }
+    if(remainder == 1) { this.binString += '1'; }
+}

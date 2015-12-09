@@ -14,7 +14,12 @@ function driver( ) {
     console.log(num.toStringBin());
     num.convertString('8');
     console.log(num.toStringBin());
-
+    num.convertString('0');
+    for(var i = 0; i < 500; i++) {
+        console.log(num.toStringBin());
+        num.increment();
+       
+    }
 }
 
 driver();
