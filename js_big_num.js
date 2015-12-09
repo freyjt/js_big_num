@@ -19,11 +19,12 @@ BigNum.prototype.convertString = function( stringIn ) {
         var i;
         var stringOut = "";
         for(i = 8; i >= 1; i /= 2) {  
-            if(num / i > 0) { //this is very clearly not right
-                stringOut = '1' + stringOut;
+            if(Math.floor(num / i) > 0) { 
+                stringOut  = '1' + stringOut;
+                num       -= i;
             } else { stringOut = '0' + stringOut; }
         }
-        console.log("binUnderTen:  " + stringOut)
+        console.log("binUnderTen:   " + numberIn + " : " + stringOut);
         return stringOut;
     }
 
@@ -50,7 +51,6 @@ BigNum.prototype.convertString = function( stringIn ) {
         smallString = binUnderTen( parseInt(locNum[0]) );
         if( len > 1) {
             largeString = convPlace( parseInt( locNum.substring(1) ) * 5, 2 );
-            console.log(largeString);
             largeString = '0' + largeString;
             //addStrings
             var maxLen  = (smallString.length > largeString.length) ? smallString.length : largeString.length;

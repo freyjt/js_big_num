@@ -8,6 +8,8 @@ function driver( ) {
     var num = new big.BigNum( );
     num.convertString('20');
     console.log(num.toStringBin());
+    num.convertString('555');
+    console.log(num.toStringBin());
 
 }
 
