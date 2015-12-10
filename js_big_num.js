@@ -114,9 +114,44 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
             remainder  = 1;
         }
     }
-    if( remainder == 1 ) retStr += 1;
+    if( remainder == 1 ) retStr += '1';
     return retStr;
 } //END addTwoBinStrings
+
+
+//Subtracts two binary strings of the form lsb on left
+// used as a helper in subtraction and addition
+BigNum.subtractTwoBinStrings = function(strOne, strTwo) {
+    var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
+    var i = 0;
+    var locTwo = '';
+    for(i = 0; i < strTwo.length; i++ ) {
+        if(strTwo[i] == '1') { locTwo += '0'; }
+        else { locTwo += '1'; }
+    }
+    var locTwo = new BigNum().setBinString( locTwo );
+    locTwo.increment(); //now we have the two's compliment of strTwo
+    var remainder = 0;
+    var added;
+    var retString = strOne; //because we want to preserve what's not in locTwo
+    for(i = 0; i < locTwo.length; i++ ) {
+        added = 0;
+        if(typeof(strOne[i]) !== 'undefined') { added += parseInt(strOne[i]); }
+        added += parseInt(locTwo[i]) + remainder;
+        if( added === 0 || added === 1 ) {
+            retString = retString.substring(0, i) + added.toString() + retString.substring(i + 1);
+            remainder = 0;
+        } else if( added === 2 ) {
+            retString = retString.substring(0, i) + '0' + retString.substring(i + 1);
+            remainder = 1;
+        } else { //assume added === 3 now
+            retString = retString.substring(0, i) + '1' + retString.substring(i + 1);
+            remainder = 1;
+        }
+    } //now we ignore remainder instead of punch it on
+    return retString;
+}// END subtractTwoBinStrings
+
 
 //Increment this object by a single number
 // @return 
