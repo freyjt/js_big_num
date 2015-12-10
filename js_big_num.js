@@ -380,6 +380,7 @@ BigNum.prototype.minus         = function( numberIn ) {
         return retVal;
     }
 }
+
 //@TODO add exit on error
 BigNum.prototype.add = function( numberIn ) {
     var adder;
@@ -393,10 +394,11 @@ BigNum.prototype.add = function( numberIn ) {
     }
     adder.setNegativity( !adder.getNegativity() );
     this.minus( adder ); //you wrote it, do it 
-}
+} //END add
 
 
-
+//Checks an input string for validity and then sets the bin string
+// of the current objet
 BigNum.prototype.setBinString = function( binStringIn ) {
     var validString = true;
     if(typeof(binStringIn) !== 'string') {
@@ -415,15 +417,41 @@ BigNum.prototype.setBinString = function( binStringIn ) {
     } else {
         console.log("Error: invalid string passed to BigNum.setBinString. String unchanged");
     }
-}
+}//END setBinString
+
+//Checks an input bool for validity and then sets the negativity
+// of the calling object
 BigNum.prototype.setNegativity = function( boolIn ) {
     if( typeof(boolIn) !== 'boolean') {
         console.log( "Error in BigNum.setNegativity, can only set off boolean value, true = negative.");
     } else {
         this.negative = boolIn;
     }
-}
+} //End setNegativity
 
+//Multiply by either a string/number or a BigNum
+BigNum.prototype.multiply = function(numberIn) {
+    
+    if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
+        var times = new BigNum( numberIn );
+    } else if (numberIn instanceof BigNum) {
+        var times = new BigNum(  );
+        times.setBinString( numberIn.getBinString() );
+    }
+
+    //check if result is pos/neg
+    var negMult = 0;
+    if( times.getNegativity() === true ) { negMult += 1; }
+    if( this.getNegativity()  === true ) { negMult += 1; }
+    if( negMult % 2 === 0 ) { this.setNegativity( false ); }
+    else                    { this.setNegativity( true  ); }
+
+    var adder = this.getBinString();
+    times.decrement(); //--returns false @ zero, so -1
+    while( times.decrement() ){
+        this.binString = this.addTwoBinStrings(this.binString, adder);
+    }
+} //END multiply
 /*
 *
 *
@@ -437,25 +465,6 @@ This is where we're up to in refactoring
 
 
 */
-
-//Multiply by either a string/number or a BigNum
-BigNum.prototype.multiply = function(numberIn) {
-    
-    //@TODO instance check numberIn
-    if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
-        var times = new BigNum( numberIn );
-    } else {
-        var times = new BigNum(  );
-        times.setBinString( numberIn.getBinString() );
-    }
-    var adder = this.getBinString();
-    times.decrement(); //--returns false @ zero, so -1
-    while( times.decrement() ){
-        // console.log( "adding   " + this.binString  + ":" + adder);
-        this.binString = this.addTwoBinStrings(this.binString, adder);
-    }
-} //END multiply
-
 //returns (index) magnitude of most-significant on bit
 // also strips off unused bits
 BigNum.prototype.getMagnitude = function( ) {
