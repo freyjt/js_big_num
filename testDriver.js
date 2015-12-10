@@ -39,7 +39,8 @@ function driver( ) {
     numOne.add( -20 );
     assertEqual( '-1111' , numOne.toStringBin(), "addition test 5 + -20");
     console.log( "+++++++++++++++++++++++++++++++++++++++++MULT");
-
+    numOne.add( 15 );
+    asserEqual( '+0', numOne.toStringBin( ), "addition test -15 + 15");
     numOne.convertString( '12345 ');
     numTwo.convertString( '5' );
     numOne.divide( numTwo );
