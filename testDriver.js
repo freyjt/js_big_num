@@ -16,11 +16,18 @@ function driver( ) {
         numOne.decrement();
 
     }
-    console.log("**************************************") 
+    console.log("**************************************");
     for(i = 0; i < 100; i++ ) {
         numOne.increment();
         console.log((-49 + i) + ": " + numOne.toStringBin( ) );
     }
+    console.log("++++++New Test +++++++++++++++++++++++");
+    numTwo = new big.BigNum( );
+    numOne.convertString(5);
+    numTwo.convertString(20);
+
+    numOne.minus( numTwo );
+    console.log( "-15 " + numOne.toStringBin( ) + ": 20 " + numTwo.toStringBin( ));
 }
 
 driver();

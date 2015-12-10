@@ -122,13 +122,14 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
         }
     }
     if( remainder == 1 ) retStr += '1';
+
     return retStr;
 } //END addTwoBinStrings
 
 
 //Subtracts two binary strings of the form lsb on left
 // used as a helper in subtraction and addition
-BigNum.subtractTwoBinStrings = function(strOne, strTwo) {
+BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
     var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
     var i = 0;
     var locTwo = '';
@@ -136,8 +137,10 @@ BigNum.subtractTwoBinStrings = function(strOne, strTwo) {
         if(strTwo[i] == '1') { locTwo += '0'; }
         else { locTwo += '1'; }
     }
-    var locTwo = new BigNum().setBinString( locTwo );
-    locTwo.increment(); //now we have the two's compliment of strTwo
+    var strTwo = new BigNum();
+        strTwo.setBinString( locTwo );
+        strTwo.increment(); 
+        locTwo = strTwo.getBinString(); //now we have the two's compliment of strTwo
     var remainder = 0;
     var added;
     var retString = strOne; //because we want to preserve what's not in locTwo
@@ -273,18 +276,22 @@ BigNum.prototype.decreaseMagnitude = function( ) {
 
 
 // Returns raw string
-BigNum.prototype.getBinString = function( ) {
+BigNum.prototype.getBinString  = function( ) {
     return this.binString;
 } //END getBinString
 BigNum.prototype.getNegativity = function( ) {
     return this.negative;
 }
-BigNum.prototype.minus        = function( numberIn ) {
+// @todo add exit on error
+BigNum.prototype.minus         = function( numberIn ) {
     var subtrahend;
     if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
         subtrahend = new BigNum( numberIn );
     } else if( numberIn instanceof BigNum ) {
-        subtrahend = new BigNum().copy(numberIn);
+        subtrahend = new BigNum();
+        subtrahend.copy(numberIn);
+    } else { 
+        console.log("Error in BigNum.minus, cannot subtract type passed");
     }
 
     //this is a mult thingy
@@ -298,24 +305,37 @@ BigNum.prototype.minus        = function( numberIn ) {
         );
     } else if(negAdder === 1) {
         this.setBinString(
-            this.addTwoBinStrings(tihs.getBinString(), subtrahend.getBinString() )
+            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
         );
-        this.setNegativity( idNegativity() );
+        this.setNegativity( idNegativity(this) );
     } else /*if(negAdder === 0)*/ {
-        this.setBinString(
-            this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
-        );
-        this.setNegativity( idNegativity() );
+
+        var subtracted = this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) ;
+
+        this.setBinString( subtracted );
+        this.setNegativity( idNegativity(this) );
     }
 
-    function idNegativity( ) {
-        var comp   = this.compareMagnitude( subtrahend);
+    function idNegativity( caller ) {
+        var comp   = caller.compareMagnitude( subtrahend );
         var retVal = false;
         if( comp === -1 ) { retVal = true;}
         return retVal;
     }
 }
-
+//@TODO add exit on error
+BigNum.prototype.add = function( numberIn ) {
+    var adder;
+    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
+        adder = new BigNum( numberIn );
+    } else if( numberIn instanceof BigNum ) {
+        adder = new BigNum().copy(numberIn);
+    } else { 
+        console.log("Error in BigNum.minus, cannot subtract type passed");
+    }
+    adder.setNegativity( !adder.getNegativity() );
+    this.minus( adder ); //you wrote it, do it 
+}
 
 
 
@@ -456,7 +476,7 @@ BigNum.prototype.divide = function( divisor ) {
     var tracker = new BigNum();
         tracker.setBinString( div.getBinString( ) );
     
-    while( this.compare( div ) != -1) {
+    while( this.compareMagnitude( div ) != -1) {
         counter.increment();
         div.addBigNum( tracker );
     }
