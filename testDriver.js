@@ -40,6 +40,7 @@ function driver( ) {
     console.log("Expect -1: " + num2.compare( num ) );
     num.convertString(5);
     console.log("Expect 0: " + num2.compare(num) );
+    console.log("Expect 0: " + num2.compare(5) );
 }
 
 driver();
