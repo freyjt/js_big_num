@@ -233,7 +233,7 @@ BigNum.prototype.decreaseMagnitude = function( ) {
 // Returns raw string
 BigNum.prototype.getBinString = function( ) {
     return this.binString;
-}
+} //END getBinString
 
 //Once more robust typechecking is in place we can consolidate these to one 'overloaded'
 // method
