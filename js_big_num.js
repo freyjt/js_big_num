@@ -75,17 +75,20 @@ BigNum.prototype.convertString = function( stringIn ) {
     this.binString = stringRep;
 } // END convertString
 
-
-
 //Returns string lsb in rightmost place
 BigNum.prototype.toStringBin  = function( ) {
     var retString = "";
     var i;
+    if(this.negative == true) {
+        retString += '-';
+    }
     for(i = this.binString.length - 1; i >= 0; i--) {
         retString += this.binString[i];
     }
     return retString;
-}
+} //End toStringBin
+
+
 BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
     var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
     var i = 0;
