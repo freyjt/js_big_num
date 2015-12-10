@@ -178,6 +178,8 @@ BigNum.prototype.setBinString = function( binStringIn ) {
         console.log("Error: invalid string passed to BigNum.setBinString. String unchanged");
     }
 }
+
+//Multiply by either a string/number or a BigNum
 BigNum.prototype.multiply = function(numberIn) {
     
     //@TODO instance check numberIn
@@ -193,7 +195,8 @@ BigNum.prototype.multiply = function(numberIn) {
         // console.log( "adding   " + this.binString  + ":" + adder);
         this.binString = this.addTwoBinStrings(this.binString, adder);
     }
-}
+} //END multiply
+
 //returns (index) magnitude of most-significant on bit
 // also strips off unused bits
 BigNum.prototype.getMagnitude = function( ) {
@@ -241,4 +244,26 @@ BigNum.prototype.compare = function( numberIn ) {
         }        
     }
     return indicator;
-}
+} //END compare
+
+//Integer division
+BigNum.prototype.divide = function( divisor ) {
+    var counter = new BigNum( 0 );
+
+    //@TODO, this validation is in 3 methods so far.
+    //  stop being a dummy ...also it needs to be more robust
+    if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
+        var div = new BigNum( divisor );
+    } else {
+        var div = new BigNum( );
+        div.setBinString( divisor.getBinString() );
+    }
+    var tracker = new BigNum();
+        tracker.setBinString( div.getBinString( ) );
+    
+    while( this.compare( div ) != -1) {
+        counter.increment();
+        div.addBigNum( tracker );
+    }
+    this.binString = counter.getBinString();
+} //END divide

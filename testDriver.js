@@ -40,7 +40,10 @@ function driver( ) {
     console.log("Expect -1: " + num2.compare( num ) );
     num.convertString(5);
     console.log("Expect 0: " + num2.compare(num) );
-    console.log("Expect 0: " + num2.compare(5) );
+    console.log("Expect 0: " + num2.compare( 5 ) );
+    num.convertString( 20 );
+    num.divide( num2 );
+    console.log( num.toStringBin() );
 }
 
 driver();
