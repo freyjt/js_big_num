@@ -6,7 +6,11 @@ module.exports = {
 
 function BigNum( numberIn ) {
 
-    this.binString = "";
+    this.binString  = "";
+    //keep false for positive values
+    // true from negative.
+    this.negative   = false;
+
     if( typeof(numberIn) !== 'undefined' ) {
         this.convertString( numberIn.toString() );
     }
@@ -52,6 +56,15 @@ BigNum.prototype.convertString = function( stringIn ) {
         }
     }
 
+    stringIn = stringIn.toString();
+    //determine negativity of string input
+    if(stringIn[0] === '-') {
+        this.negative = true;
+        stringIn = stringIn.substring(1);
+    } else {
+        this.negative = false;
+    }
+
     convPlace( stringIn, '');
 
     var stringRep = "";
@@ -60,7 +73,9 @@ BigNum.prototype.convertString = function( stringIn ) {
         stringRep = this.addTwoBinStrings(stringRep, arrBins[i]);
     }
     this.binString = stringRep;
-}
+} // END convertString
+
+
 
 //Returns string lsb in rightmost place
 BigNum.prototype.toStringBin  = function( ) {
