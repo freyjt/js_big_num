@@ -9,10 +9,15 @@ function BigNum( numberIn ) {
     this.binString  = "";
     //keep false for positive values
     // true from negative.
+    // ***NOTE cannot use two's complement
+    //  to store because the magnitude of the number
+    //  can grow indefinitely; so we do this
     this.negative   = false;
 
     if( typeof(numberIn) !== 'undefined' ) {
         this.convertString( numberIn.toString() );
+    } else if( numberIn instanceof BigNum ) {
+        this.copy( numberIn );
     }
 
 }
@@ -381,7 +386,8 @@ BigNum.prototype.add = function( numberIn ) {
     if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
         adder = new BigNum( numberIn );
     } else if( numberIn instanceof BigNum ) {
-        adder = new BigNum().copy(numberIn);
+        adder = new BigNum();
+        adder.copy(numberIn);
     } else { 
         console.log("Error in BigNum.minus, cannot subtract type passed");
     }
@@ -391,34 +397,6 @@ BigNum.prototype.add = function( numberIn ) {
 
 
 
-/*
-*
-*
-
-
-
-This is where we're up to in refactoring
-
-
-
-
-
-*/
-//Once more robust typechecking is in place we can consolidate these to one 'overloaded'
-// method
-BigNum.prototype.addBigNum = function( BigNumIn ){
-    //@TODO typecheck BigNumIn
-    var stringIn   = BigNumIn.getBinString( );
-    this.binString = this.addTwoBinStrings(this.binString, stringIn);
-}
-BigNum.prototype.addNumber = function(numberIn) {
-    if( typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
-        var locBig = new BigNum( numberIn.toString() ).getBinString();
-        this.binString = this.addTwoBinStrings(this.binString, locBig);
-    } else {
-        console.log("Error: improper var passed to BigNum.addNumber, needs string or number.");
-    }
-}
 BigNum.prototype.setBinString = function( binStringIn ) {
     var validString = true;
     if(typeof(binStringIn) !== 'string') {
@@ -445,6 +423,20 @@ BigNum.prototype.setNegativity = function( boolIn ) {
         this.negative = boolIn;
     }
 }
+
+/*
+*
+*
+
+
+
+This is where we're up to in refactoring
+
+
+
+
+
+*/
 
 //Multiply by either a string/number or a BigNum
 BigNum.prototype.multiply = function(numberIn) {
