@@ -452,19 +452,7 @@ BigNum.prototype.multiply = function(numberIn) {
         this.binString = this.addTwoBinStrings(this.binString, adder);
     }
 } //END multiply
-/*
-*
-*
 
-
-
-This is where we're up to in refactoring
-
-
-
-
-
-*/
 //returns (index) magnitude of most-significant on bit
 // also strips off unused bits
 BigNum.prototype.getMagnitude = function( ) {
@@ -475,7 +463,6 @@ BigNum.prototype.getMagnitude = function( ) {
     this.binString = this.binString.substring(0, mag + 1);
     return mag;
 } //END getMagnitude
-
 
 //return 0 if two magnitudes are equal, -1 if the calling number is smaller
 //  or 1 if the calling number is greater
@@ -516,16 +503,25 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
 
 //Integer division
 BigNum.prototype.divide = function( divisor ) {
+    
     var counter = new BigNum( 0 );
-
     //@TODO, this validation is in 3 methods so far.
     //  stop being a dummy ...also it needs to be more robust
     if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
         var div = new BigNum( divisor );
-    } else {
+    } else if( divisor instanceof BigNum) {
         var div = new BigNum( );
-        div.setBinString( divisor.getBinString() );
+        div.copy( divisor );
     }
+    var negCounter = 0;
+    if( this.getNegativity() === true ) { negCounter += 1; }
+    if( div.getNegativity()  === true ) { negCounter += 1; }
+    if( negCounter % 2 === 0 ) {
+        this.setNegativity( false );
+    } else {
+        this.setNegativity( true  );
+    }
+
     var tracker = new BigNum();
         tracker.setBinString( div.getBinString( ) );
     
@@ -533,5 +529,6 @@ BigNum.prototype.divide = function( divisor ) {
         counter.increment();
         div.addBigNum( tracker );
     }
-    this.binString = counter.getBinString();
+
+    this.setBinString( counter.getBinString() );
 } //END divide
