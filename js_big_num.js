@@ -16,7 +16,14 @@ function BigNum( numberIn ) {
     }
 
 }
-
+BigNum.prototype.copy = function( BigNumIn ) {
+    if( !(BigNumIn instanceof BigNum) ) {
+        console.log( "Error in BigNum.copy, cannot copy object if not BigNum.");
+    } else {
+        this.setBinString( BigNumIn.getBinString() );
+        this.setNegativity( BigNumIn.getNegativity() );
+    }
+}
 //convert a string represented number to a binary string
 BigNum.prototype.convertString = function( stringIn ) {
     
@@ -269,7 +276,38 @@ BigNum.prototype.decreaseMagnitude = function( ) {
 BigNum.prototype.getBinString = function( ) {
     return this.binString;
 } //END getBinString
+BigNum.prototype.getNegativity = function( ) {
+    return this.negative;
+}
+BigNum.prototype.minus        = function( numberIn ) {
+    var subtrahend;
+    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
+        subtrahend = new BigNum( numberIn );
+    } else if( numberIn instanceof BigNum ) {
+        subtrahend = numberIn;
+    }
 
+
+
+
+}
+
+
+
+
+/*
+*
+*
+
+
+
+This is where we're up to in refactoring
+
+
+
+
+
+*/
 //Once more robust typechecking is in place we can consolidate these to one 'overloaded'
 // method
 BigNum.prototype.addBigNum = function( BigNumIn ){
@@ -302,6 +340,13 @@ BigNum.prototype.setBinString = function( binStringIn ) {
         this.binString = binStringIn;
     } else {
         console.log("Error: invalid string passed to BigNum.setBinString. String unchanged");
+    }
+}
+BigNum.prototype.setNegativity = function( boolIn ) {
+    if( typeof(boolIn) !== 'boolean') {
+        console.log( "Error in BigNum.setNegativity, can only set off boolean value, true = negative.");
+    } else {
+        this.negative = boolIn;
     }
 }
 
