@@ -194,3 +194,51 @@ BigNum.prototype.multiply = function(numberIn) {
         this.binString = this.addTwoBinStrings(this.binString, adder);
     }
 }
+//returns (index) magnitude of most-significant on bit
+// also strips off unused bits
+BigNum.prototype.getMagnitude = function( ) {
+    var mag = 0;
+    for(var i = 0; i < this.binString.length; i++) {
+        if( this.binString[i] === '1' ) { mag = i; }
+    }
+    this.binString = this.binString.substring(0, mag + 1);
+    return mag;
+} //END getMagnitude
+
+
+//return 0 if two numbers are equal, -1 if the calling number is smaller
+//  or 1 if the calling number is greater
+BigNum.prototype.compare = function( numberIn ) {
+    var indicator = 0;
+    if(typeof(numberIn) == 'number' || typeof(numberIn) == 'string') {
+        var compWith = new BigNum( numberIn );
+    } else {
+        var compWith = new BigNum( );
+        compWith.setBinString( numberIn.getBinString() ); 
+    }
+    localMag   = this.getMagnitude();
+    foreignMag = compWith.getMagnitude();
+    if( localMag > foreignMag ) {
+        indicator =  1;
+    } else if( localMag < foreignMag ) {
+        indicator = -1;
+    } else {
+        //magnitudes are equal, so we need to further discriminate
+        //   ....
+        var localString   = this.getBinString();
+        var foreignString = compWith.getBinString();
+        var localBit, foreignBit;
+        for(var i = localMag; i >= 0; i--) {
+            localBit   = parseInt( localString[i] );
+            foreignBit = parseInt( foreignString[i]);
+            if( localBit > foreignBit ) {
+                indicator =  1;
+                break;
+            } else if( localBit < foreignBit ) {
+                indicator = -1;
+                break;
+            }
+        }        
+    }
+    return indicator;
+}
