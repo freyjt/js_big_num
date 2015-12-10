@@ -88,7 +88,9 @@ BigNum.prototype.toStringBin  = function( ) {
     return retString;
 } //End toStringBin
 
-
+//Adds two binary numbers with lsb in leftmost place (like this.binString)
+// used as a helper in multiplication and addition
+// *ignores negativity as these strings do not have sign bits
 BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
     var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
     var i = 0;
@@ -114,9 +116,94 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
     }
     if( remainder == 1 ) retStr += 1;
     return retStr;
-}
-BigNum.prototype.increment = function( ) {
+} //END addTwoBinStrings
 
+//Increment this object by a single number
+// @return 
+//    -1 if result is a negative value
+//     0 if result is 0
+//     1 if result is a positive value
+BigNum.prototype.increment = function( ) {
+    //increase magnitude of binString iff
+    // object is non-negative
+    var retValue;
+    if(this.negative === false ) {
+        this.increaseMagnitude( );
+        retValue = 1;
+    } else {
+        this.decreaseMagnitude( );
+        retValue = -1;
+        var isZero = true;
+        var i;
+        //determine if result is zero
+        for( i = 0; i < this.binString.length; i++) {
+            if(this.binString[i] === '1') {
+                isZero = false;
+                break;
+            }
+        }
+        if(isZero === true) { 
+            this.binString = '0';
+            retValue      = 0;
+            this.negative = false; 
+        }
+    }
+    return retValue;
+} // END increment
+
+//Increment this object by a single number
+// @return 
+//    -1 if result is a negative value
+//     0 if result is 0
+//     1 if result is a positive value
+BigNum.prototype.decrement = function( ) {
+    var retValue = 0;
+    if(this.negative === true) {
+        this.increaseMagnitude();
+        retValue = -1;
+    } else {
+        this.decreaseMagnitude();
+        //Some explanation.
+        // If the binString starts from zero,
+        // we can be certain that the decrementer
+        // will completely fill the string (to whatever)
+        // magnitude with 1s (even if only 1 bit)
+        //  keep in mind, this is strongly bound to
+        //  decreaseMagnitude()
+        // so, we check for the presence of ANY zeroes
+        // when we find them, we know this number should be
+        //  -1
+        var highestOrder = true;
+        var isZero       = true;
+        var i;
+        for(i = 0; i < this.binString.length; i++ ) {
+            if(this.binString[i] !== '1') {
+                highestOrder = false;
+            } else {
+                isZero       = false;
+            }
+            if(highestOrder === false && isZero === false) {
+                break;
+            }
+        }
+        if( highestOrder === true ) {
+            this.binString = '1';
+            this.negative  = true;
+            retValue       =   -1;
+        } else if(isZero == false) {
+            retValue = 1;
+        } else {
+            retValue = 0;
+        }
+    }
+    return retValue;
+}//END decrement
+
+//Increase and decrease magnitude are both helper functions
+// for increment and decrement.
+// The change this.binString to be one less or one more
+//  in magnitude from zero
+BigNum.prototype.increaseMagnitude = function( ) {
     var remainder = 1; //incrementing by this many
     for(var i = 0; i < this.binString.length; i++) {
         present = parseInt(this.binString[i]) + remainder;
@@ -131,31 +218,17 @@ BigNum.prototype.increment = function( ) {
     }
     if(remainder == 1) { this.binString += '1'; }
 }
-BigNum.prototype.decrement = function( ) {
-    //flip all bits until we get to a one... and flip that
-    var isZero = true;
-    var i;
+BigNum.prototype.decreaseMagnitude = function( ) {
     for( i = 0; i < this.binString.length; i++) {
         if(this.binString[i] == '1') {
-            isZero = false;
+            this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i + 1);
             break;
+        } else {
+            this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i + 1);
         }
     }
-    if(isZero == false) {
-        for( i = 0; i < this.binString.length; i++) {
-            if(this.binString[i] == '1') {
-                this.binString = this.binString.substring(0, i) + "0" + this.binString.substring(i + 1);
-                break;
-            } else {
-                this.binString = this.binString.substring(0, i) + "1" + this.binString.substring(i + 1);
-            }
-        }
-    } else { 
-        //@TODO teach it zero
-        // console.log("Error: cannot decrement past zero value yet.");
-    }
-    return !isZero;
-}
+} //END increase/decreaseMagnitude
+
 
 // Returns raw string
 BigNum.prototype.getBinString = function( ) {
