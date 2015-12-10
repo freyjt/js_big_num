@@ -28,6 +28,10 @@ function driver( ) {
 
     numOne.minus( numTwo );
     console.log( "-15 " + numOne.toStringBin( ) + ": 20 " + numTwo.toStringBin( ));
+    numOne.minus( -20 );
+    console.log( "+5 " + numOne.toStringBin( ) );
+    numOne.add( 15 );
+    console.log( "20 " + numOne.toStringBin() );
 }
 
 driver();

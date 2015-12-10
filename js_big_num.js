@@ -144,10 +144,12 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
     var remainder = 0;
     var added;
     var retString = strOne; //because we want to preserve what's not in locTwo
+
     for(i = 0; i < locTwo.length; i++ ) {
         added = 0;
         if(typeof(strOne[i]) !== 'undefined') { added += parseInt(strOne[i]); }
         added += parseInt(locTwo[i]) + remainder;
+        
         if( added === 0 || added === 1 ) {
             retString = retString.substring(0, i) + added.toString() + retString.substring(i + 1);
             remainder = 0;
@@ -159,6 +161,30 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
             remainder = 1;
         }
     } //now we ignore remainder instead of punch it on
+    //@todo, uncompliment the string. 2s complement is not good for this
+    //  but, you know, it works.
+    //avoiding object creation first decrement
+
+    for(i = 0; i < retString.length; i++) {
+        
+        if(retString[i] === '0' ) {
+            retString = retString.substring(0, i) + '1' + retString.substring(i + 1);
+            
+        } else {
+            retString = retString.substring(0, i) + '0' + retString.substring(i + 1);
+            break;   
+        }
+    } if( i === retString.length ) retString += '1'; //@TODO, look at this with fresh eyes
+
+    for(i = 0; i < retString.length; i++) {
+        
+        if(retString[i] === '0') {
+            retString = retString.substring(0, i) + '1' + retString.substring(i + 1); 
+        } else {
+            retString = retString.substring(0, i) + '0' + retString.substring(i + 1);     
+        }
+
+    }
     return retString;
 }// END subtractTwoBinStrings
 
@@ -283,6 +309,7 @@ BigNum.prototype.getNegativity = function( ) {
     return this.negative;
 }
 // @todo add exit on error
+// @todo, this may be the ugliest thing you've ever written
 BigNum.prototype.minus         = function( numberIn ) {
     var subtrahend;
     if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
@@ -298,24 +325,49 @@ BigNum.prototype.minus         = function( numberIn ) {
     var negAdder = 0;
     if( this.getNegativity()       === true ) { negAdder += 1; }
     if( subtrahend.getNegativity() === true ) { negAdder += 1; }
+    var comp = this.compareMagnitude( subtrahend );
 
-    if( negAdder === 2 ) {
+    if( this.getNegativity() === true && subtrahend.getNegativity() === true ) {
+        
+        if( comp === 0) //both same negative value
+            this.setNegativity( true );
+        else if( comp === 1) //both negative, this greater
+            this.setNegativity( true );
+        else //if comp === -1 //both negative, this lesser
+            this.setNegativity( false );
+
         this.setBinString( 
-            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
+            this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
         );
-    } else if(negAdder === 1) {
+
+    } else if(this.getNegativity() === true && subtrahend.getNegativity() === false ) {
+        /* negative and subtracting a positive */
+        this.setNegativity( true );
+
         this.setBinString(
             this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
         );
-        this.setNegativity( idNegativity(this) );
-    } else /*if(negAdder === 0)*/ {
+        
+    } else if(this.getNegativity() === false && subtrahend.getNegativity() === true) {
+        /* not negative and subtracting a negative */ 
+        this.setNegativity( false );
 
-        var subtracted = this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) ;
+        this.setBinString(
+            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
+        );
 
-        this.setBinString( subtracted );
-        this.setNegativity( idNegativity(this) );
+    } else {
+        if( comp === 0 ) { // have same magnitude both positive --zero result
+            this.setNegativity( false );
+        } else if( comp === 1 ) {// both positive, this larger --pos result
+            this.setNegativity( false );
+        } else { this.setNegativity( true ); }
+        this.setBinString( 
+            this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) 
+        );
+        
     }
-
+    //@todo, make this not wrong
     function idNegativity( caller ) {
         var comp   = caller.compareMagnitude( subtrahend );
         var retVal = false;
