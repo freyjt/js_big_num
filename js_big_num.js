@@ -284,12 +284,36 @@ BigNum.prototype.minus        = function( numberIn ) {
     if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
         subtrahend = new BigNum( numberIn );
     } else if( numberIn instanceof BigNum ) {
-        subtrahend = numberIn;
+        subtrahend = new BigNum().copy(numberIn);
     }
 
+    //this is a mult thingy
+    var negAdder = 0;
+    if( this.getNegativity()       === true ) { negAdder += 1; }
+    if( subtrahend.getNegativity() === true ) { negAdder += 1; }
 
+    if( negAdder === 2 ) {
+        this.setBinString( 
+            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
+        );
+    } else if(negAdder === 1) {
+        this.setBinString(
+            this.addTwoBinStrings(tihs.getBinString(), subtrahend.getBinString() )
+        );
+        this.setNegativity( idNegativity() );
+    } else /*if(negAdder === 0)*/ {
+        this.setBinString(
+            this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
+        );
+        this.setNegativity( idNegativity() );
+    }
 
-
+    function idNegativity( ) {
+        var comp   = this.compareMagnitude( subtrahend);
+        var retVal = false;
+        if( comp === -1 ) { retVal = true;}
+        return retVal;
+    }
 }
 
 
@@ -380,9 +404,9 @@ BigNum.prototype.getMagnitude = function( ) {
 } //END getMagnitude
 
 
-//return 0 if two numbers are equal, -1 if the calling number is smaller
+//return 0 if two magnitudes are equal, -1 if the calling number is smaller
 //  or 1 if the calling number is greater
-BigNum.prototype.compare = function( numberIn ) {
+BigNum.prototype.compareMagnitude = function( numberIn ) {
     var indicator = 0;
     if(typeof(numberIn) == 'number' || typeof(numberIn) == 'string') {
         var compWith = new BigNum( numberIn );
