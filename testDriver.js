@@ -32,6 +32,28 @@ function driver( ) {
     console.log( "+5 " + numOne.toStringBin( ) );
     numOne.add( 15 );
     console.log( "20 " + numOne.toStringBin() );
+    console.log("**********test Add***********************");
+    numOne.convertString("-0");
+    numOne.add( 5 );
+    assertEqual('+101', numOne.toStringBin(), "addition  test -0 + 5" )
+    numOne.add( -20 );
+    assertEqual( '-1111' , numOne.toStringBin(), "addition test 5 + -20");
+    console.log( "+++++++++++++++++++++++++++++++++++++++++MULT");
+
+    numOne.convertString( '12345 ');
+    numTwo.convertString( '5' );
+    numOne.divide( numTwo );
+    console.log("expect 2049 == 100000000001 -> " + numOne.toStringBin() );
 }
 
 driver();
+
+
+function assertEqual( thingOne, thingTwo, testdescription ) {
+    if( thingOne !== thingTwo ) {
+        console.log("Test failed " + testdescription );
+        console.log(thingOne + " and " + thingTwo + " are not the same thing.");
+    } else {
+        console.log("Test passed " + testdescription );
+    }
+}

@@ -71,8 +71,11 @@ BigNum.prototype.convertString = function( stringIn ) {
     stringIn = stringIn.toString();
     //determine negativity of string input
     if(stringIn[0] === '-') {
-        this.negative = true;
+        this.setNegativity( true );
         stringIn = stringIn.substring(1);
+        if(parseInt( stringIn ) === 0 ) {
+            this.setNegativity( false );
+        }
     } else {
         this.negative = false;
     }
@@ -91,11 +94,19 @@ BigNum.prototype.convertString = function( stringIn ) {
 BigNum.prototype.toStringBin  = function( ) {
     var retString = "";
     var i;
+    var firstOne = false;
     if(this.negative == true) {
         retString += '-';
+    } else {
+        retString += '+';
     }
     for(i = this.binString.length - 1; i >= 0; i--) {
-        retString += this.binString[i];
+        if( firstOne === false && this.binString[i] === '1') {
+            retString += this.binString[i];
+            firstOne = true;
+        } else if(firstOne === true) {
+            retString += this.binString[i]
+        }
     }
     return retString;
 } //End toStringBin
@@ -527,7 +538,7 @@ BigNum.prototype.divide = function( divisor ) {
     
     while( this.compareMagnitude( div ) != -1) {
         counter.increment();
-        div.addBigNum( tracker );
+        div.add( tracker );
     }
 
     this.setBinString( counter.getBinString() );
