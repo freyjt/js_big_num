@@ -38,13 +38,26 @@ function driver( ) {
     assertEqual('+101', numOne.toStringBin(), "addition  test -0 + 5" )
     numOne.add( -20 );
     assertEqual( '-1111' , numOne.toStringBin(), "addition test 5 + -20");
-    console.log( "+++++++++++++++++++++++++++++++++++++++++MULT");
     numOne.add( 15 );
-    asserEqual( '+0', numOne.toStringBin( ), "addition test -15 + 15");
-    numOne.convertString( '12345 ');
+    assertEqual( '+0', numOne.toStringBin( ), "addition test -15 + 15");
+    console.log( "+++++++++++++++++++++++++++++++++++++++++MULT");
+
+
+    console.log("====Divide===========999999999999999999999")
+    numOne.convertString( '125' );
+
     numTwo.convertString( '5' );
     numOne.divide( numTwo );
-    console.log("expect 2049 == 100000000001 -> " + numOne.toStringBin() );
+    assertEqual("+11001", numOne.toStringBin(), 'divide 125 by 5' );
+    numOne.convertString('12345');
+    asserter = numOne.toStringBin();
+    console.log(asserter);
+    numOne.divide( 5 );
+    console.log("expect 2469 == 100101110101 -> " + numOne.toStringBin() );
+    console.log("break to see where debugging statements start");
+    console.log( numOne.toStringBin() + " " + numOne.toString() );
+    numOne.convertString('-555')
+    assertEqual( '-555', numOne.toString(), "Testing tostring -555 == -555");
 }
 
 driver();

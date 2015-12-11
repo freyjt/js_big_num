@@ -108,6 +108,8 @@ BigNum.prototype.toStringBin  = function( ) {
             retString += this.binString[i]
         }
     }
+    //see if number is 0
+    if(firstOne === false) { retString += 0; }
     return retString;
 } //End toStringBin
 
@@ -345,8 +347,8 @@ BigNum.prototype.minus         = function( numberIn ) {
 
     if( this.getNegativity() === true && subtrahend.getNegativity() === true ) {
         
-        if( comp === 0) //both same negative value
-            this.setNegativity( true );
+        if( comp === 0) //both same negative value result is 0
+            this.setNegativity( false );
         else if( comp === 1) //both negative, this greater
             this.setNegativity( true );
         else //if comp === -1 //both negative, this lesser
@@ -513,8 +515,9 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
 } //END compare
 
 //Integer division
+// @TODO check for zero divisor
 BigNum.prototype.divide = function( divisor ) {
-    
+    var trueCounter = 0;
     var counter = new BigNum( 0 );
     //@TODO, this validation is in 3 methods so far.
     //  stop being a dummy ...also it needs to be more robust
@@ -524,6 +527,7 @@ BigNum.prototype.divide = function( divisor ) {
         var div = new BigNum( );
         div.copy( divisor );
     }
+
     var negCounter = 0;
     if( this.getNegativity() === true ) { negCounter += 1; }
     if( div.getNegativity()  === true ) { negCounter += 1; }
@@ -536,10 +540,102 @@ BigNum.prototype.divide = function( divisor ) {
     var tracker = new BigNum();
         tracker.setBinString( div.getBinString( ) );
     
-    while( this.compareMagnitude( div ) != -1) {
+    while( this.compareMagnitude( div ) !== -1) {
+        console.log(counter.toStringBin( ) + " " + (trueCounter++));
+        
         counter.increment();
         div.add( tracker );
     }
 
     this.setBinString( counter.getBinString() );
-} //END divide
+} //END divide 
+
+
+//Print this object in a decimal string;
+BigNum.prototype.toString = function( ) {
+    //returns string representation
+    // of decimal value of a single bit
+    // to a given magnitude
+    // ONLY call when
+
+    //@Note to self: keep in lsb left until
+    // end, then flip it around
+    getDecString(5);
+    function getDecString( mag ) {
+        // 3 layers.
+        function doubleDec( str ) {
+            var ret = addDecStrings( str, str);
+            return ret;
+        }
+        var k;   //keeping it real
+        var bigVal = '2'; //doubler
+        if( mag === 0 ) { returner = '1'; }
+        else {
+            for(k = 1; k < mag; k++) {
+                bigVal = doubleDec( bigVal );
+
+            }
+            returner = bigVal;
+        }
+        return returner;
+    }
+    function addDecStrings( one, two) {
+        var remainder = 0;
+        var maxLen    = (one.length > two.length)?one.length:two.length;
+        var i, total, oDig, tDig;
+        var retStr = "";
+        for(i = 0; i < maxLen; i++) {
+
+            total = 0;
+            if(typeof(one[i]) !== 'undefined') {
+                total += parseInt(one[i]);
+            }
+            if(typeof(two[i]) !== 'undefined') {
+                total += parseInt(two[i]);
+            }
+            total += remainder;
+
+            total = total.toString();
+            //total.length can only be 1 or 2
+            // (between 0 and 27)
+            //string ops instead of division ops
+            // you might want to find out which is faster
+            if(total.length === 1){
+                retStr    += total;
+                remainder  = 0;
+            }
+            else {
+                retStr    += total[1];
+                remainder  = parseInt(total[0]);
+            }
+        } 
+        if(remainder > 0) {
+            retStr += remainder.toString();
+        }
+        return retStr;
+    }
+
+    var strings = [];
+    var bin     = this.getBinString();
+    var i;
+    var pusher = "";
+    for(i = 0; i < bin.length; i++) {
+        if(bin[i] === '1') {
+            pusher = getDecString( i );
+            strings.push( pusher );
+        }
+    }
+    var added = "";
+    //@TODO this can grow logarithmically
+    for(i = 0; i < strings.length; i++) {
+        added = addDecStrings( added, strings[i] );
+    }
+    var outString = "";
+    if(this.getNegativity() === true) {
+        outString += '-';
+    }
+    for(i = added.length - 1; i >= 0; i--){
+        outString += added[i];
+    }
+    return outString;
+}
