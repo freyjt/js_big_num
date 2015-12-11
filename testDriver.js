@@ -58,6 +58,8 @@ function driver( ) {
     console.log( numOne.toStringBin() + " " + numOne.toString() );
     numOne.convertString('-555')
     assertEqual( '-555', numOne.toString(), "Testing tostring -555 == -555");
+    numOne.convertString('939993828829393903030034049')
+    assertEqual('939993828829393903030034049', numOne.toString(), "BiiiiiiigNum test" );
 }
 
 driver();

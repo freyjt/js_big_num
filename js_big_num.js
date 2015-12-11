@@ -63,7 +63,10 @@ BigNum.prototype.convertString = function( stringIn ) {
         arrBins.push( lead + binUnderTen(lastDigi) );
 
         if( len > 1 ) {
+            //@TODO THESE ARE KILLING BIG NUMBERS
+            // you can't parseInt bigger than num
             var sub = parseInt(locNum.substring(0, len - 1));
+
             convPlace(sub * 5, '0' + lead );
         }
     }
