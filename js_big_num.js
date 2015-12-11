@@ -47,50 +47,59 @@ BigNum.prototype.convertString = function( stringIn ) {
         return stringOut;
     }
 
-
-    //helper function, converts a string to a binary string
-    // numberIn should never be > 45
-    var arrBins     = []; //yup
-    function convPlace( numberIn, lead ) {
-
-        var locNum    = numberIn.toString();
-        var len       = locNum.length;
-
-        // delete numHolder    
-        var stringOut   = "";
-        // pick out last digit
-        var lastDigi = locNum[len - 1];
-        arrBins.push( lead + binUnderTen(lastDigi) );
-
-        if( len > 1 ) {
-            //@TODO THESE ARE KILLING BIG NUMBERS
-            // you can't parseInt bigger than num
-            var sub = parseInt(locNum.substring(0, len - 1));
-
-            convPlace(sub * 5, '0' + lead );
-        }
-    }
-
     stringIn = stringIn.toString();
     //determine negativity of string input
     if(stringIn[0] === '-') {
         this.setNegativity( true );
         stringIn = stringIn.substring(1);
+
+        //@TODO: NO PARSEINT
         if(parseInt( stringIn ) === 0 ) {
             this.setNegativity( false );
         }
     } else {
         this.negative = false;
     }
+    //bootstrap a single digit number
+    if( stringIn.length === 1 ) {
+        this.setBinString( binUnderTen( stringIn ) );
+    } else {
+        
+        var arrBins     = []; //yup
+        var fronter     = '';
+        var multiplier  = new BigNum('1');
+        var toBeSet     = new BigNum('1');
+        var pusher;
+        for( i = stringIn.length - 1; i >= 0; i--) {
 
-    convPlace( stringIn, '');
+            //@TODO SOOOO Slow. There are gains to be made
+            // by switching tobeset and multiplier but we need to
+            // return objects from multiply (and other operations 
+            // for consistency)
+            if(stringIn[i] !== '0') {
+                
+                toBeSet.setBinString( binUnderTen( stringIn[i] ) );
+                
+                toBeSet.multiply( multiplier );
+                
+                pusher = fronter + toBeSet.getBinString();
+                
+                arrBins.push( pusher );
+            }
+            fronter += '0';
+            multiplier.multiply( 5 );
+            console.log( multiplier.getBinString());
+        }
+    
 
-    var stringRep = "";
-    var i;
-    for(i = 0; i < arrBins.length; i++) {
-        stringRep = this.addTwoBinStrings(stringRep, arrBins[i]);
+        var stringRep = "";
+        var i;
+        for(i = 0; i < arrBins.length; i++) {
+            stringRep = this.addTwoBinStrings(stringRep, arrBins[i]);
+        }
+        this.setBinString( stringRep );
     }
-    this.binString = stringRep;
+
 } // END convertString
 
 //Returns string lsb in rightmost place
@@ -446,8 +455,9 @@ BigNum.prototype.setNegativity = function( boolIn ) {
 } //End setNegativity
 
 //Multiply by either a string/number or a BigNum
+// @TODO seems to break when multiplying by zero
 BigNum.prototype.multiply = function(numberIn) {
-    
+
     if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
         var times = new BigNum( numberIn );
     } else if (numberIn instanceof BigNum) {
@@ -455,6 +465,7 @@ BigNum.prototype.multiply = function(numberIn) {
         times.setBinString( numberIn.getBinString() );
     }
 
+    times.setNegativity( false );
     //check if result is pos/neg
     var negMult = 0;
     if( times.getNegativity() === true ) { negMult += 1; }
@@ -464,7 +475,7 @@ BigNum.prototype.multiply = function(numberIn) {
 
     var adder = this.getBinString();
     times.decrement(); //--returns false @ zero, so -1
-    while( times.decrement() ){
+    while( times.decrement() > -1 ){
         this.binString = this.addTwoBinStrings(this.binString, adder);
     }
 } //END multiply
