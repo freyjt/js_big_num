@@ -718,6 +718,13 @@ BigNum.prototype.multiply = function(numberIn) {
             store = this.addTwoBinStrings( store, adders[i] );
         }
         retObject.setBinString( store );
+
+        //check for a zero object result to
+        //  keep -0 from existing
+        if( retObject.compareMagnitude( 0 ) === 0) {
+            retObject.setNegativity(false);
+        }
+
     } else { 
         retObject = null;
         console.log("Error: Cannot multiply BigNum by given object, returning null.");
