@@ -134,29 +134,6 @@ BigNum.prototype.convertString = function( stringIn ) {
  //                                                                 GlassGiant.com
 
 
-//Returns string lsb in rightmost place
-BigNum.prototype.toStringBin  = function( ) {
-    var retString = "";
-    var i;
-    var firstOne = false;
-    if(this.negative == true) {
-        retString += '-';
-    } else {
-        retString += '+';
-    }
-    for(i = this.binString.length - 1; i >= 0; i--) {
-        if( firstOne === false && this.binString[i] === '1') {
-            retString += this.binString[i];
-            firstOne = true;
-        } else if(firstOne === true) {
-            retString += this.binString[i]
-        }
-    }
-    //see if number is 0
-    if(firstOne === false) { retString += 0; }
-    return retString;
-} //End toStringBin
-
 //Adds two binary numbers with lsb in leftmost place (like this.binString)
 // used as a helper in multiplication and addition
 // *ignores negativity as these strings do not have sign bits
@@ -456,7 +433,25 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
 
 
 
-//Print this object in a decimal string;
+
+
+//                        ,MM                 .                                    
+//                         I.                 MM                                   
+//     .....        ..          .      ..   . MM  .      ..          ...       . . 
+//  .MM MMMMMM    MM MMMM  MM    M MMMMMM.  MMMMMMM.   MMMMMMM .  MM MMMM  MMMMMM  
+//  .MMM    MMM   MMM.     MM    MM,   =MM.   MM      MM     MM   MMM     MM.      
+//  .MM.    .MM   MM       MM    MI     MM.   MM     MM.     MM   MM .    MMM. .   
+//  .MM.     MM   MM       MM    MI     MM    MM     MMMMMMMMMM   MM      ..MMMM   
+//  .MM    ..MM.  MM       MM    MI     MM    MM     MM           MM          .MMO 
+//  .MMM . .MM$.  MM       MM    MI     MM    MM.    .MM       .  MM      .     MM 
+//  .MM,MMMMMM    MM       MM    MI     MM     MMMM   .MMMMMMMM.  MM     .MMMMMMM  
+//  .MM  ..      .        . .   . .     . .    .....     . ...   . .      . .  .   
+// ..MM.                                                                        ...
+// ..MM  .  .  .. .. .. ..  .  .  .  .. .. .. ..  .  .  .  .. .. .. ..  .  .  . ...
+                                                                                
+//                                                                  GlassGiant.com
+
+//Print this object as a decimal string;
 BigNum.prototype.toString = function( ) {
     //returns string representation
     // of decimal value of a single bit
@@ -544,10 +539,35 @@ BigNum.prototype.toString = function( ) {
     }
     return outString;
 }
+      
+//Returns string lsb in rightmost place
+//   and '-' sign iff negative
+BigNum.prototype.toStringBin  = function( ) {
+    var retString = "";
+    var i;
+    var firstOne = false;
+    if(this.negative == true) {
+        retString += '-';
+    } else {
+        retString += '+';
+    }
+    for(i = this.binString.length - 1; i >= 0; i--) {
+        if( firstOne === false && this.binString[i] === '1') {
+            retString += this.binString[i];
+            firstOne = true;
+        } else if(firstOne === true) {
+            retString += this.binString[i]
+        }
+    }
+    //see if number is 0
+    if(firstOne === false) { retString += 0; }
+    return retString;
+} //End toStringBin
 
 
 
-                                                                                
+
+                                                               
 //                                              I=.  MMM                           
 //   ..  .        ..      ..      . .   .       MM.   .       ..   ..  ..     ...  
 //  :MMMMMM   MIMMMMM   MMMMMM  MMMMM.?MMMMMM IMMMMM.~MM  MMMMMMM  =M+MMMM+  MMMMM.
