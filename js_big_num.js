@@ -95,14 +95,14 @@ BigNum.prototype.convertString = function( stringIn ) {
                 
                 toBeSet.setBinString( binUnderTen( stringIn[i] ) );
                 
-                toBeSet.multiply( multiplier );
+                tobeSet = toBeSet.multiply( multiplier );
                 
                 pusher = fronter + toBeSet.getBinString();
                 
                 arrBins.push( pusher );
             }
             fronter += '0';
-            multiplier.multiply( 5 );
+            multiplier = multiplier.multiply( 5 );
         }
     
         var stringRep = "";
@@ -520,7 +520,7 @@ BigNum.prototype.toString = function( ) {
         return retStr;
     }
 
-    var strings = [];
+    var strings = []; 
     var bin     = this.getBinString();
     var i;
     var pusher = "";
@@ -530,7 +530,7 @@ BigNum.prototype.toString = function( ) {
             strings.push( pusher );
         }
     }
-    var added = "";
+    var added = "0"; //print zero strings
     //@TODO this can grow logarithmically
     for(i = 0; i < strings.length; i++) {
         added = addDecStrings( added, strings[i] );
@@ -646,21 +646,22 @@ BigNum.prototype.minus         = function( numberIn ) {
 //Multiply by either a string/number or a BigNum
 // @TODO seems to break when multiplying by zero
 BigNum.prototype.multiply = function(numberIn) {
-
+    var retObject = new BigNum( );
     if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
         var times = new BigNum( numberIn );
     } else if (numberIn instanceof BigNum) {
         var times = new BigNum(  );
         times.copy( numberIn );
-    }
+    
+    } 
 
     
     //check if result is pos/neg
     var negMult = 0;
     if( times.getNegativity() === true ) { negMult += 1; }
     if( this.getNegativity()  === true ) { negMult += 1; }
-    if( negMult % 2 === 0 ) { this.setNegativity( false ); }
-    else                    { this.setNegativity( true  ); }
+    if( negMult % 2 === 0 ) { retObject.setNegativity( false ); }
+    else                    { retObject.setNegativity( true  ); }
 
     var adders = [];
     var store  = '0';
@@ -677,11 +678,12 @@ BigNum.prototype.multiply = function(numberIn) {
     }
 
     var i;
-    store = ''; //reuse because confusing is good?
+    store = '0'; //reuse, zero to easier allow multiplying by zero
     for(i = 0; i < adders.length; i++) {
         store = this.addTwoBinStrings( store, adders[i] );
     }
-    this.setBinString( store );
+    retObject.setBinString( store );
+    return retObject;
 } //END multiply
 
 
