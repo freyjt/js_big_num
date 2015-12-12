@@ -456,6 +456,11 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
                                                                                 
 //                                                                  GlassGiant.com
 
+
+BigNum.prototype.tostring = function( ) {
+    return this.toString();
+}
+
 //Print this object as a decimal string;
 BigNum.prototype.toString = function( ) {
     //returns string representation

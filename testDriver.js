@@ -74,6 +74,11 @@ function driver( ) {
     num.convertString("50");
     num2.convertString(-50);
     assertEqual( "0", num.add(num2).toString(), "asserting 50 + -50 == 0 with addition");
+
+    //******
+    num.convertString(50);
+    num2.convertString(50);
+    assertEqual("0", num.minus(num2).tostring(), "asserting 50 - 50 == 0 with subtraction");
 }
 
 driver();
