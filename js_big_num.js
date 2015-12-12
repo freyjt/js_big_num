@@ -664,45 +664,50 @@ BigNum.prototype.minus         = function( numberIn ) {
 }
 
 //Multiply by either a string/number or a BigNum
-// @TODO seems to break when multiplying by zero
 BigNum.prototype.multiply = function(numberIn) {
     var retObject = new BigNum( );
+    var goodInput = false;
     if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
         var times = new BigNum( numberIn );
+        goodInput = true;
     } else if (numberIn instanceof BigNum) {
         var times = new BigNum(  );
         times.copy( numberIn );
-    
+        goodInput = true;
     } 
+    if(goodInput === true) {
+        //check if result is pos/neg
+        var negMult = 0;
+        if( times.getNegativity() === true ) { negMult += 1; }
+        if( this.getNegativity()  === true ) { negMult += 1; }
+        if( negMult % 2 === 0 ) { retObject.setNegativity( false ); }
+        else                    { retObject.setNegativity( true  ); }
 
-    
-    //check if result is pos/neg
-    var negMult = 0;
-    if( times.getNegativity() === true ) { negMult += 1; }
-    if( this.getNegativity()  === true ) { negMult += 1; }
-    if( negMult % 2 === 0 ) { retObject.setNegativity( false ); }
-    else                    { retObject.setNegativity( true  ); }
+        var adders = [];
+        var store  = '0';
+        var left   = this.getBinString();
+        var right  = times.getBinString();
 
-    var adders = [];
-    var store  = '0';
-    var left   = this.getBinString();
-    var right  = times.getBinString();
-
-    while( right.length > 0 ) {
-        store = right[0];
-        if( store === '1' ) {
-            adders.push( left );
+        while( right.length > 0 ) {
+            store = right[0];
+            if( store === '1' ) {
+                adders.push( left );
+            }
+            left  = '0' + left; // left shift
+            right = right.substring(1); // r shift
         }
-        left  = '0' + left; // left shift
-        right = right.substring(1); // r shift
-    }
 
-    var i;
-    store = '0'; //reuse, zero to easier allow multiplying by zero
-    for(i = 0; i < adders.length; i++) {
-        store = this.addTwoBinStrings( store, adders[i] );
+        var i;
+        store = '0'; //reuse, zero to easier allow multiplying by zero
+        for(i = 0; i < adders.length; i++) {
+            store = this.addTwoBinStrings( store, adders[i] );
+        }
+        retObject.setBinString( store );
+    } else { 
+        retObject = null;
+        console.log("Error: Cannot multiply BigNum by given object, returning null.");
     }
-    retObject.setBinString( store );
+    
     return retObject;
 } //END multiply
 
