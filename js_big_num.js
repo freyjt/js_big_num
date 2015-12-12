@@ -93,24 +93,27 @@ BigNum.prototype.convertString = function( stringIn ) {
             // return objects from multiply (and other operations 
             // for consistency)
             if(stringIn[i] !== '0') {
-                
+
+
                 toBeSet.setBinString( binUnderTen( stringIn[i] ) );
                 
-                tobeSet = toBeSet.multiply( multiplier );
+                toBeSet = toBeSet.multiply( multiplier );
                 
-                pusher = fronter + toBeSet.getBinString();
-                
+                pusher  = fronter + toBeSet.getBinString();
+
                 arrBins.push( pusher );
             }
-            fronter += '0';
-            multiplier = multiplier.multiply( 5 );
+            fronter    += '0';
+            multiplier  = multiplier.multiply( 5 );
+
         }
     
-        var stringRep = "";
+        var stringRep = "0";
         var i;
         for(i = 0; i < arrBins.length; i++) {
             stringRep = this.addTwoBinStrings(stringRep, arrBins[i]);
         }
+
         this.setBinString( stringRep );
     }
 
@@ -407,6 +410,7 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
     }
     localMag   = this.getMagnitude();
     foreignMag = compWith.getMagnitude();
+
     if( localMag > foreignMag ) {
         indicator =  1;
     } else if( localMag < foreignMag ) {
@@ -529,7 +533,7 @@ BigNum.prototype.toString = function( ) {
     var added = "0"; //print zero strings
     //@TODO this can grow logarithmically
     for(i = 0; i < strings.length; i++) {
-        added = mDecStrings( added, strings[i] );
+        added = addDecStrings( added, strings[i] );
     }
     var outString = "";
     if(this.getNegativity() === true) {
@@ -729,6 +733,7 @@ BigNum.prototype.divide = function( divisor ) {
 
     var trueCounter = 0;
     var counter     = new BigNum( 0 ); //return objcet
+
     var goodInput   = false;
     //@TODO, this validation is in 3 methods so far.
     //  stop being a dummy ...also it needs to be more robust
@@ -741,11 +746,22 @@ BigNum.prototype.divide = function( divisor ) {
         goodInput = true;
     }
 
-    if( counter.compareMagnitude( 0 ) === 0 ) {
+    if( div.compareMagnitude( 0 ) === 0 ) {
         goodInput = false;
     }
 
-    if(goodInput) {
+    if(goodInput === true) {
+
+        var ender = new BigNum(0);
+            ender.setBinString( this.getBinString() );
+        var tracker = new BigNum( div );
+
+        while( div.compareMagnitude( ender ) < 1 ) {
+            counter.increment( ); //counter +0 starting, this works
+            div = div.add( tracker );
+        }
+
+        //determine negativity of number
         var negCounter = 0;
         if( this.getNegativity() === true ) { negCounter += 1; }
         if( div.getNegativity()  === true ) { negCounter += 1; }
@@ -754,22 +770,11 @@ BigNum.prototype.divide = function( divisor ) {
         } else {
             counter.setNegativity( true  );
         }
-
-        var tracker = new BigNum();
-            tracker.setBinString( div.getBinString( ) );
         
-        while( this.compareMagnitude( div ) !== -1) {
-            console.log(counter.toStringBin( ) + " " + (trueCounter++));
-            
-            counter.increment();
-            div = div.add( tracker );
-        }
-
     } else {
         console.log( "Unable to divide, returning null");
         counter = null;
     }
-
 
     return counter;
 } //END divide 
