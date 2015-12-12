@@ -88,10 +88,8 @@ BigNum.prototype.convertString = function( stringIn ) {
             }
             fronter += '0';
             multiplier.multiply( 5 );
-            console.log( multiplier.getBinString());
         }
     
-
         var stringRep = "";
         var i;
         for(i = 0; i < arrBins.length; i++) {
@@ -462,10 +460,10 @@ BigNum.prototype.multiply = function(numberIn) {
         var times = new BigNum( numberIn );
     } else if (numberIn instanceof BigNum) {
         var times = new BigNum(  );
-        times.setBinString( numberIn.getBinString() );
+        times.copy( numberIn );
     }
 
-    times.setNegativity( false );
+    
     //check if result is pos/neg
     var negMult = 0;
     if( times.getNegativity() === true ) { negMult += 1; }
@@ -473,11 +471,26 @@ BigNum.prototype.multiply = function(numberIn) {
     if( negMult % 2 === 0 ) { this.setNegativity( false ); }
     else                    { this.setNegativity( true  ); }
 
-    var adder = this.getBinString();
-    times.decrement(); //--returns false @ zero, so -1
-    while( times.decrement() > -1 ){
-        this.binString = this.addTwoBinStrings(this.binString, adder);
+    var adders = [];
+    var store  = '0';
+    var left   = this.getBinString();
+    var right  = times.getBinString();
+
+    while( right.length > 0 ) {
+        store = right[0];
+        if( store === '1' ) {
+            adders.push( left );
+        }
+        left  = '0' + left; // left shift
+        right = right.substring(1); // r shift
     }
+
+    var i;
+    store = ''; //reuse because confusing is good?
+    for(i = 0; i < adders.length; i++) {
+        store = this.addTwoBinStrings( store, adders[i] );
+    }
+    this.setBinString( store );
 } //END multiply
 
 //returns (index) magnitude of most-significant on bit
