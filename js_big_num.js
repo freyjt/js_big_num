@@ -560,8 +560,6 @@ BigNum.prototype.toString = function( ) {
                                                                                 
 //                                                                  GlassGiant.com
 
-
-
 //@TODO add exit on error
 BigNum.prototype.add = function( numberIn ) {
     var adder;
@@ -689,37 +687,51 @@ BigNum.prototype.multiply = function(numberIn) {
 
 
 //Integer division
-// @TODO check for zero divisor
 BigNum.prototype.divide = function( divisor ) {
+
     var trueCounter = 0;
-    var counter = new BigNum( 0 );
+    var counter     = new BigNum( 0 ); //return objcet
+    var goodInput   = false;
     //@TODO, this validation is in 3 methods so far.
     //  stop being a dummy ...also it needs to be more robust
     if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
         var div = new BigNum( divisor );
+        goodInput = true;
     } else if( divisor instanceof BigNum) {
         var div = new BigNum( );
         div.copy( divisor );
+        goodInput = true;
     }
 
-    var negCounter = 0;
-    if( this.getNegativity() === true ) { negCounter += 1; }
-    if( div.getNegativity()  === true ) { negCounter += 1; }
-    if( negCounter % 2 === 0 ) {
-        this.setNegativity( false );
-    } else {
-        this.setNegativity( true  );
+    if( counter.compareMagnitude( 0 ) === 0 ) {
+        goodInput = false;
     }
 
-    var tracker = new BigNum();
-        tracker.setBinString( div.getBinString( ) );
-    
-    while( this.compareMagnitude( div ) !== -1) {
-        console.log(counter.toStringBin( ) + " " + (trueCounter++));
+    if(goodInput) {
+        var negCounter = 0;
+        if( this.getNegativity() === true ) { negCounter += 1; }
+        if( div.getNegativity()  === true ) { negCounter += 1; }
+        if( negCounter % 2 === 0 ) {
+            counter.setNegativity( false );
+        } else {
+            counter.setNegativity( true  );
+        }
+
+        var tracker = new BigNum();
+            tracker.setBinString( div.getBinString( ) );
         
-        counter.increment();
-        div.add( tracker );
+        while( this.compareMagnitude( div ) !== -1) {
+            console.log(counter.toStringBin( ) + " " + (trueCounter++));
+            
+            counter.increment();
+            div.add( tracker );
+        }
+
+    } else {
+        console.log( "Unable to divide, returning null");
+        counter = null;
     }
 
-    this.setBinString( counter.getBinString() );
+
+    return counter;
 } //END divide 
