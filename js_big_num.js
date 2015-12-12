@@ -4,6 +4,21 @@ module.exports = {
     BigNum: BigNum,
 };
 
+
+
+ //                                                                          ..M:                      
+ //                                      7M+.                           7MM. .MMM                      
+ //    ..     ..    .             ...    MMM    . ..  ..   .    .    . .MMM .  ..       .   .... .  .  
+ // . MMMMM . MMMMMMI  MM+MMMMM..MMMMMM.MMMMMM MM=MMM MM   ,MM  .MMMMM MMMMMM =MM   MMMMMMI  MMMMMMMM. 
+ // .MM   .. MM .  MM  MMM   MM  MM      MMM   MMM    MM   ,MM .MM      MMM   =MM  MM..  MM  MMM   MM. 
+ //  MM      MM   .MM. MMM   MM  .MMMM.  MMM   MMM    MM   ,MM ,MM.     MMM   =MM ,MM   .MM. MMI   MM  
+ //  MM      MM .  MM  MMM   MM   .. MM  MMM   MMM    MM   OMM  MM      MMM   =MM. MM    MM  MMI   MM  
+ // .ZMMMMM .7MMMMMM~  MMM   MM  MMMMMM ..MMMM MMM    +MMMMMMM .OMMMMM ..MMMM =MM  7MMMMMM~  MMI   MM  
+ //     ,       ..                 :                    .          :.                ...               
+                                                                                                    
+                                                                                                    
+ //                                                                                     GlassGiant.com
+
 function BigNum( numberIn ) {
 
     this.binString  = "";
@@ -99,6 +114,25 @@ BigNum.prototype.convertString = function( stringIn ) {
     }
 
 } // END convertString
+
+
+
+                                                                                
+ // .MMM                    MMM                                                    
+ //  MMM                    MMM                                                    
+ //  MMM  ,,         ,      MMM       .,         ,.         .,     ,               
+ //  MMMMMMMMM    MMMMMMM   MMM  ~MMMMMMMM:.  MMMMMMM  .=MMMMMM.MMMMMMI            
+ //  MMM,...MM   MM,   MMM  MMM  =MMM  .MMM .MMM   ?MM. =MMM..  MM  .  .           
+ //  MMM    MM   MMMMMMMMM  MMM  =MM.   MMM  MMMMMMMMM  =MM.    OMMMM+             
+ //  MMM    MM  .MM..   . . MMM  =MM    MMM .MM:     .. =MM      . MMMM.           
+ //  MMM    MM  .MMM     .  MMM  =MMM+ OMMM  MMM.   .I  =MM     I   MMM.           
+ //  MMM    MM   .MMMMMMM.  MMM  =MM MMMM7 .. $MMMMMMO  =MM     MMMMMM.            
+ //     .  ..  .  .  .  .. .   . =MM .. .        .         .         .             
+ //                              =MM                                               
+ //                                 .                                              
+                                                                                
+ //                                                                 GlassGiant.com
+
 
 //Returns string lsb in rightmost place
 BigNum.prototype.toStringBin  = function( ) {
@@ -336,88 +370,7 @@ BigNum.prototype.getBinString  = function( ) {
 BigNum.prototype.getNegativity = function( ) {
     return this.negative;
 }
-// @todo add exit on error
-// @todo, this may be the ugliest thing you've ever written
-BigNum.prototype.minus         = function( numberIn ) {
-    var subtrahend;
-    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
-        subtrahend = new BigNum( numberIn );
-    } else if( numberIn instanceof BigNum ) {
-        subtrahend = new BigNum();
-        subtrahend.copy(numberIn);
-    } else { 
-        console.log("Error in BigNum.minus, cannot subtract type passed");
-    }
 
-    //this is a mult thingy
-    var negAdder = 0;
-    if( this.getNegativity()       === true ) { negAdder += 1; }
-    if( subtrahend.getNegativity() === true ) { negAdder += 1; }
-    var comp = this.compareMagnitude( subtrahend );
-
-    if( this.getNegativity() === true && subtrahend.getNegativity() === true ) {
-        
-        if( comp === 0) //both same negative value result is 0
-            this.setNegativity( false );
-        else if( comp === 1) //both negative, this greater
-            this.setNegativity( true );
-        else //if comp === -1 //both negative, this lesser
-            this.setNegativity( false );
-
-        this.setBinString( 
-            this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
-        );
-
-    } else if(this.getNegativity() === true && subtrahend.getNegativity() === false ) {
-        /* negative and subtracting a positive */
-        this.setNegativity( true );
-
-        this.setBinString(
-            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
-        );
-        
-    } else if(this.getNegativity() === false && subtrahend.getNegativity() === true) {
-        /* not negative and subtracting a negative */ 
-        this.setNegativity( false );
-
-        this.setBinString(
-            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
-        );
-
-    } else {
-        if( comp === 0 ) { // have same magnitude both positive --zero result
-            this.setNegativity( false );
-        } else if( comp === 1 ) {// both positive, this larger --pos result
-            this.setNegativity( false );
-        } else { this.setNegativity( true ); }
-        this.setBinString( 
-            this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) 
-        );
-        
-    }
-    //@todo, make this not wrong
-    function idNegativity( caller ) {
-        var comp   = caller.compareMagnitude( subtrahend );
-        var retVal = false;
-        if( comp === -1 ) { retVal = true;}
-        return retVal;
-    }
-}
-
-//@TODO add exit on error
-BigNum.prototype.add = function( numberIn ) {
-    var adder;
-    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
-        adder = new BigNum( numberIn );
-    } else if( numberIn instanceof BigNum ) {
-        adder = new BigNum();
-        adder.copy(numberIn);
-    } else { 
-        console.log("Error in BigNum.minus, cannot subtract type passed");
-    }
-    adder.setNegativity( !adder.getNegativity() );
-    this.minus( adder ); //you wrote it, do it 
-} //END add
 
 
 //Checks an input string for validity and then sets the bin string
@@ -452,46 +405,6 @@ BigNum.prototype.setNegativity = function( boolIn ) {
     }
 } //End setNegativity
 
-//Multiply by either a string/number or a BigNum
-// @TODO seems to break when multiplying by zero
-BigNum.prototype.multiply = function(numberIn) {
-
-    if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
-        var times = new BigNum( numberIn );
-    } else if (numberIn instanceof BigNum) {
-        var times = new BigNum(  );
-        times.copy( numberIn );
-    }
-
-    
-    //check if result is pos/neg
-    var negMult = 0;
-    if( times.getNegativity() === true ) { negMult += 1; }
-    if( this.getNegativity()  === true ) { negMult += 1; }
-    if( negMult % 2 === 0 ) { this.setNegativity( false ); }
-    else                    { this.setNegativity( true  ); }
-
-    var adders = [];
-    var store  = '0';
-    var left   = this.getBinString();
-    var right  = times.getBinString();
-
-    while( right.length > 0 ) {
-        store = right[0];
-        if( store === '1' ) {
-            adders.push( left );
-        }
-        left  = '0' + left; // left shift
-        right = right.substring(1); // r shift
-    }
-
-    var i;
-    store = ''; //reuse because confusing is good?
-    for(i = 0; i < adders.length; i++) {
-        store = this.addTwoBinStrings( store, adders[i] );
-    }
-    this.setBinString( store );
-} //END multiply
 
 //returns (index) magnitude of most-significant on bit
 // also strips off unused bits
@@ -541,41 +454,6 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
     return indicator;
 } //END compare
 
-//Integer division
-// @TODO check for zero divisor
-BigNum.prototype.divide = function( divisor ) {
-    var trueCounter = 0;
-    var counter = new BigNum( 0 );
-    //@TODO, this validation is in 3 methods so far.
-    //  stop being a dummy ...also it needs to be more robust
-    if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
-        var div = new BigNum( divisor );
-    } else if( divisor instanceof BigNum) {
-        var div = new BigNum( );
-        div.copy( divisor );
-    }
-
-    var negCounter = 0;
-    if( this.getNegativity() === true ) { negCounter += 1; }
-    if( div.getNegativity()  === true ) { negCounter += 1; }
-    if( negCounter % 2 === 0 ) {
-        this.setNegativity( false );
-    } else {
-        this.setNegativity( true  );
-    }
-
-    var tracker = new BigNum();
-        tracker.setBinString( div.getBinString( ) );
-    
-    while( this.compareMagnitude( div ) !== -1) {
-        console.log(counter.toStringBin( ) + " " + (trueCounter++));
-        
-        counter.increment();
-        div.add( tracker );
-    }
-
-    this.setBinString( counter.getBinString() );
-} //END divide 
 
 
 //Print this object in a decimal string;
@@ -666,3 +544,182 @@ BigNum.prototype.toString = function( ) {
     }
     return outString;
 }
+
+
+
+                                                                                
+//                                              I=.  MMM                           
+//   ..  .        ..      ..      . .   .       MM.   .       ..   ..  ..     ...  
+//  :MMMMMM   MIMMMMM   MMMMMM  MMMMM.?MMMMMM IMMMMM.~MM  MMMMMMM  =M+MMMM+  MMMMM.
+// .MM   $MM  MM.  MM..MM   MM  MMM.   .  .MM   MM   =MM ,MM   MMM =MM.  MM. MM    
+// ,MM    MM  MM   MM=.MMMMMMM. MM    .MMMMMM   MM   =MM MMM   IMM.=MM   MM. .MMMM.
+//  MM   MMM  MM.. MM  MM       MM    MM.  MM   MM   =MM  MM...MM..=MM   MM.  . MM~
+//   MMMMM+   MMMMMM    MMMMMM  MM    :MMMMMM  .MMMM.=MM  :MMMMM   =MM   MM. MMMMM 
+//   ...      MM ..      . .. . ...     . ..     ..  ..     .         . . . .. ..  
+//           .MM                                                                   
+                                                                                
+//                                                                  GlassGiant.com
+
+
+
+//@TODO add exit on error
+BigNum.prototype.add = function( numberIn ) {
+    var adder;
+    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
+        adder = new BigNum( numberIn );
+    } else if( numberIn instanceof BigNum ) {
+        adder = new BigNum();
+        adder.copy(numberIn);
+    } else { 
+        console.log("Error in BigNum.minus, cannot subtract type passed");
+    }
+    adder.setNegativity( !adder.getNegativity() );
+    this.minus( adder ); //you wrote it, do it 
+} //END add
+
+// @todo add exit on error
+// @todo, this may be the ugliest thing you've ever written
+BigNum.prototype.minus         = function( numberIn ) {
+    var subtrahend;
+    if(typeof(numberIn) === 'number' || typeof(numberIn) === 'string') {
+        subtrahend = new BigNum( numberIn );
+    } else if( numberIn instanceof BigNum ) {
+        subtrahend = new BigNum();
+        subtrahend.copy(numberIn);
+    } else { 
+        console.log("Error in BigNum.minus, cannot subtract type passed");
+    }
+
+    //this is a mult thingy
+    var negAdder = 0;
+    if( this.getNegativity()       === true ) { negAdder += 1; }
+    if( subtrahend.getNegativity() === true ) { negAdder += 1; }
+    var comp = this.compareMagnitude( subtrahend );
+
+    if( this.getNegativity() === true && subtrahend.getNegativity() === true ) {
+        
+        if( comp === 0) //both same negative value result is 0
+            this.setNegativity( false );
+        else if( comp === 1) //both negative, this greater
+            this.setNegativity( true );
+        else //if comp === -1 //both negative, this lesser
+            this.setNegativity( false );
+
+        this.setBinString( 
+            this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
+        );
+
+    } else if(this.getNegativity() === true && subtrahend.getNegativity() === false ) {
+        /* negative and subtracting a positive */
+        this.setNegativity( true );
+
+        this.setBinString(
+            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
+        );
+        
+    } else if(this.getNegativity() === false && subtrahend.getNegativity() === true) {
+        /* not negative and subtracting a negative */ 
+        this.setNegativity( false );
+
+        this.setBinString(
+            this.addTwoBinStrings(this.getBinString(), subtrahend.getBinString() )
+        );
+
+    } else {
+        if( comp === 0 ) { // have same magnitude both positive --zero result
+            this.setNegativity( false );
+        } else if( comp === 1 ) {// both positive, this larger --pos result
+            this.setNegativity( false );
+        } else { this.setNegativity( true ); }
+        this.setBinString( 
+            this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) 
+        );
+        
+    }
+    //@todo, make this not wrong
+    function idNegativity( caller ) {
+        var comp   = caller.compareMagnitude( subtrahend );
+        var retVal = false;
+        if( comp === -1 ) { retVal = true;}
+        return retVal;
+    }
+}
+
+//Multiply by either a string/number or a BigNum
+// @TODO seems to break when multiplying by zero
+BigNum.prototype.multiply = function(numberIn) {
+
+    if(typeof(numberIn) === 'string' || typeof(numberIn) === 'number') {
+        var times = new BigNum( numberIn );
+    } else if (numberIn instanceof BigNum) {
+        var times = new BigNum(  );
+        times.copy( numberIn );
+    }
+
+    
+    //check if result is pos/neg
+    var negMult = 0;
+    if( times.getNegativity() === true ) { negMult += 1; }
+    if( this.getNegativity()  === true ) { negMult += 1; }
+    if( negMult % 2 === 0 ) { this.setNegativity( false ); }
+    else                    { this.setNegativity( true  ); }
+
+    var adders = [];
+    var store  = '0';
+    var left   = this.getBinString();
+    var right  = times.getBinString();
+
+    while( right.length > 0 ) {
+        store = right[0];
+        if( store === '1' ) {
+            adders.push( left );
+        }
+        left  = '0' + left; // left shift
+        right = right.substring(1); // r shift
+    }
+
+    var i;
+    store = ''; //reuse because confusing is good?
+    for(i = 0; i < adders.length; i++) {
+        store = this.addTwoBinStrings( store, adders[i] );
+    }
+    this.setBinString( store );
+} //END multiply
+
+
+
+//Integer division
+// @TODO check for zero divisor
+BigNum.prototype.divide = function( divisor ) {
+    var trueCounter = 0;
+    var counter = new BigNum( 0 );
+    //@TODO, this validation is in 3 methods so far.
+    //  stop being a dummy ...also it needs to be more robust
+    if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
+        var div = new BigNum( divisor );
+    } else if( divisor instanceof BigNum) {
+        var div = new BigNum( );
+        div.copy( divisor );
+    }
+
+    var negCounter = 0;
+    if( this.getNegativity() === true ) { negCounter += 1; }
+    if( div.getNegativity()  === true ) { negCounter += 1; }
+    if( negCounter % 2 === 0 ) {
+        this.setNegativity( false );
+    } else {
+        this.setNegativity( true  );
+    }
+
+    var tracker = new BigNum();
+        tracker.setBinString( div.getBinString( ) );
+    
+    while( this.compareMagnitude( div ) !== -1) {
+        console.log(counter.toStringBin( ) + " " + (trueCounter++));
+        
+        counter.increment();
+        div.add( tracker );
+    }
+
+    this.setBinString( counter.getBinString() );
+} //END divide 
