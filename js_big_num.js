@@ -873,7 +873,7 @@ BigNum.prototype.sqrt = function( ) {
     if( this.getNegativity() === true ) {
         console.log("Cannot root a negative value. Returning null.");
         returnObj = null;
-    } else {
+    } else if(this.compare(0) !== 0) {
         //Save time by exploiting facts
         this.trimBinString(); //make sure binString is without leading zeroes
         var order = this.getBinString().length;
@@ -883,7 +883,7 @@ BigNum.prototype.sqrt = function( ) {
         for(i = 1; i < order; i++) {
             builder += '0';
         } builder += '1';
-        var comp = new bigNum( 0 );
+        var comp = new BigNum( 0 );
             comp.setBinString( builder );
 
         var store      = ""; //a temp storage for the last known good string
@@ -892,7 +892,7 @@ BigNum.prototype.sqrt = function( ) {
             //first swap the 0 at i with 1
             store   = comp.getBinString();
             builder = comp.getBinString();
-            builder = builder.subString(0, i) + 1 + builder.subString(i + 1);
+            builder = builder.substring(0, i) + 1 + builder.substring(i + 1);
             comp.setBinString( builder );
             comp = comp.multiply( comp );
             //then check if the new value squared is > this
@@ -906,10 +906,11 @@ BigNum.prototype.sqrt = function( ) {
             } else {
                 comp.setBinString( builder );
             }
-            
         }
         returnObj = comp;
+    } else {
+        returnObj = new BigNum(0);
     }
-    
+
     return returnObj;
 }

@@ -125,6 +125,15 @@ function driver( ) {
     num.trimBinString();
     assertEqual("11", num.getBinString(), "asserting trim works to take 1100 to 11");
 
+    //********sqrt
+    num.convertString(9);
+    assertEqual("3", num.sqrt().toString(), "asserting that sqrt(9) == 3");
+    num.convertString(626);
+    assertEqual("25", num.sqrt().toString(), "asserrting that sqrt(626) == 25");
+    num.convertString(0);
+    assertEqual("0", num.sqrt().toString(), "asserting that sqrt(0) == 0");
+    num.convertString( -5 );
+    assertEqual(null, num.sqrt(), "asserting that sqrt(-#) returns null");
 }
 
 driver();
