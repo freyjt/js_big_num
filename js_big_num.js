@@ -232,86 +232,6 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
 }// END subtractTwoBinStrings
 
 
-//Increment this object by a single number
-// @return 
-//    -1 if result is a negative value
-//     0 if result is 0
-//     1 if result is a positive value
-BigNum.prototype.increment = function( ) {
-    //increase magnitude of binString iff
-    // object is non-negative
-    var retValue;
-    if(this.negative === false ) {
-        this.increaseMagnitude( );
-        retValue = 1;
-    } else {
-        this.decreaseMagnitude( );
-        retValue = -1;
-        var isZero = true;
-        var i;
-        //determine if result is zero
-        for( i = 0; i < this.binString.length; i++) {
-            if(this.binString[i] === '1') {
-                isZero = false;
-                break;
-            }
-        }
-        if(isZero === true) { 
-            this.binString = '0';
-            retValue      = 0;
-            this.negative = false; 
-        }
-    }
-    return retValue;
-} // END increment
-
-//Increment this object by a single number
-// @return 
-//    -1 if result is a negative value
-//     0 if result is 0
-//     1 if result is a positive value
-BigNum.prototype.decrement = function( ) {
-    var retValue = 0;
-    if(this.negative === true) {
-        this.increaseMagnitude();
-        retValue = -1;
-    } else {
-        this.decreaseMagnitude();
-        //Some explanation.
-        // If the binString starts from zero,
-        // we can be certain that the decrementer
-        // will completely fill the string (to whatever)
-        // magnitude with 1s (even if only 1 bit)
-        //  keep in mind, this is strongly bound to
-        //  decreaseMagnitude()
-        // so, we check for the presence of ANY zeroes
-        // when we find them, we know this number should be
-        //  -1
-        var highestOrder = true;
-        var isZero       = true;
-        var i;
-        for(i = 0; i < this.binString.length; i++ ) {
-            if(this.binString[i] !== '1') {
-                highestOrder = false;
-            } else {
-                isZero       = false;
-            }
-            if(highestOrder === false && isZero === false) {
-                break;
-            }
-        }
-        if( highestOrder === true ) {
-            this.binString = '1';
-            this.negative  = true;
-            retValue       =   -1;
-        } else if(isZero == false) {
-            retValue = 1;
-        } else {
-            retValue = 0;
-        }
-    }
-    return retValue;
-}//END decrement
 
 //Increase and decrease magnitude are both helper functions
 // for increment and decrement.
@@ -827,3 +747,84 @@ BigNum.prototype.compare = function( numIn ) {
         }
     }
 }
+
+//Increment this object by a single number
+// @return 
+//    -1 if result is a negative value
+//     0 if result is 0
+//     1 if result is a positive value
+BigNum.prototype.increment = function( ) {
+    //increase magnitude of binString iff
+    // object is non-negative
+    var retValue;
+    if(this.negative === false ) {
+        this.increaseMagnitude( );
+        retValue = 1;
+    } else {
+        this.decreaseMagnitude( );
+        retValue = -1;
+        var isZero = true;
+        var i;
+        //determine if result is zero
+        for( i = 0; i < this.binString.length; i++) {
+            if(this.binString[i] === '1') {
+                isZero = false;
+                break;
+            }
+        }
+        if(isZero === true) { 
+            this.binString = '0';
+            retValue      = 0;
+            this.negative = false; 
+        }
+    }
+    return retValue;
+} // END increment
+
+//Increment this object by a single number
+// @return 
+//    -1 if result is a negative value
+//     0 if result is 0
+//     1 if result is a positive value
+BigNum.prototype.decrement = function( ) {
+    var retValue = 0;
+    if(this.negative === true) {
+        this.increaseMagnitude();
+        retValue = -1;
+    } else {
+        this.decreaseMagnitude();
+        //Some explanation.
+        // If the binString starts from zero,
+        // we can be certain that the decrementer
+        // will completely fill the string (to whatever)
+        // magnitude with 1s (even if only 1 bit)
+        //  keep in mind, this is strongly bound to
+        //  decreaseMagnitude()
+        // so, we check for the presence of ANY zeroes
+        // when we find them, we know this number should be
+        //  -1
+        var highestOrder = true;
+        var isZero       = true;
+        var i;
+        for(i = 0; i < this.binString.length; i++ ) {
+            if(this.binString[i] !== '1') {
+                highestOrder = false;
+            } else {
+                isZero       = false;
+            }
+            if(highestOrder === false && isZero === false) {
+                break;
+            }
+        }
+        if( highestOrder === true ) {
+            this.binString = '1';
+            this.negative  = true;
+            retValue       =   -1;
+        } else if(isZero == false) {
+            retValue = 1;
+        } else {
+            retValue = 0;
+        }
+    }
+    return retValue;
+}//END decrement

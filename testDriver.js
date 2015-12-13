@@ -93,6 +93,15 @@ function driver( ) {
     assertEqual(1, num2.compare(num), "asserting 99 is greater than -111");
     assertEqual(0, num2.compare(num2), "asserting 99 is equal to 99");
 
+    //*************INCREMENT/DECREMENT
+    num.convertString( -2 );
+    assertEqual(-1, num.increment(), "asserting return of incrementing negative is negative");
+    assertEqual("-1", num.tostring(), "asserting result of inc on -2 is -1");
+    assertEqual(0, num.increment(), "asserting return of inc on -1 is 0");
+    assertEqual("0", num.toString(), "asserting reult of inc on -1 is 0");
+    assertEqual(1, num.increment(), "asserting return of inc on 0 is positive");
+    assertEqual("1", num.tostring(), "asserting result of inc on 0 is 1");
+
 }
 
 driver();
