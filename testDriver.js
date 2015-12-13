@@ -58,11 +58,15 @@ function driver( ) {
     num2.convertString(0);
     assertEqual(null, num.divide(num2), "asserting 4/0 == null with division");
 
+    //*********
+    num.convertString('12');
+    num2.convertString('3');
+    assertEqual('4', num.divide(num2).toString(), "asserting 12/3 == 4");
+
     //*******ADDITION
     num.convertString( "55" );
     assertEqual( "110", num.add(55).toString(), "asserting 110 == 110 with addition");
 
-    //*******
     num.convertString("5017");
     num2.convertString("-5037");
     assertEqual( "-20", num.add(num2).toString(), "asserting -20 == -20 with addition");
@@ -74,6 +78,8 @@ function driver( ) {
     num.convertString("50");
     num2.convertString(-50);
     assertEqual( "0", num.add(num2).toString(), "asserting 50 + -50 == 0 with addition");
+
+
 
     //******SUBTRACTION
     num.convertString(50);
@@ -92,6 +98,8 @@ function driver( ) {
     assertEqual(-1, num.compare(num2), "asserting -111 is less than 99");
     assertEqual(1, num2.compare(num), "asserting 99 is greater than -111");
     assertEqual(0, num2.compare(num2), "asserting 99 is equal to 99");
+
+
 
     //*************INCREMENT/DECREMENT
     num.convertString( -2 );

@@ -175,6 +175,10 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
 BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
     var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
     var i = 0;
+    for(i = 0; i < maxLen + 1; i++) {
+        if( typeof(strOne[i]) === 'undefined' )     strOne += '0';
+        else if (typeof(strTwo[i]) === 'undefined') strTwo += '0';
+    }
     var locTwo = '';
     for(i = 0; i < strTwo.length; i++ ) {
         if(strTwo[i] == '1') { locTwo += '0'; }
@@ -182,7 +186,7 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
     }
     var strTwo = new BigNum();
         strTwo.setBinString( locTwo );
-        strTwo.increment(); 
+        strTwo.increment();
         locTwo = strTwo.getBinString(); //now we have the two's compliment of strTwo
     var remainder = 0;
     var added;
@@ -204,30 +208,29 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
             remainder = 1;
         }
     } //now we ignore remainder instead of punch it on
-    //@todo, uncompliment the string. 2s complement is not good for this
+    
+    // uncompliment the string. 2s complement is not good for this
     //  but, you know, it works.
-    //avoiding object creation first decrement
-
-    for(i = 0; i < retString.length; i++) {
+    // for(i = 0; i < retString.length; i++) {
         
-        if(retString[i] === '0' ) {
-            retString = retString.substring(0, i) + '1' + retString.substring(i + 1);
+    //     if(retString[i] === '0' ) {
+    //         retString = retString.substring(0, i) + '1' + retString.substring(i + 1);
             
-        } else {
-            retString = retString.substring(0, i) + '0' + retString.substring(i + 1);
-            break;   
-        }
-    } if( i === retString.length ) retString += '1'; //@TODO, look at this with fresh eyes
+    //     } else {
+    //         retString = retString.substring(0, i) + '0' + retString.substring(i + 1);
+    //         break;   
+    //     }
+    // } if( i === retString.length ) retString += '1'; //@TODO, look at this with fresh eyes
 
-    for(i = 0; i < retString.length; i++) {
+    // for(i = 0; i < retString.length; i++) {
         
-        if(retString[i] === '0') {
-            retString = retString.substring(0, i) + '1' + retString.substring(i + 1); 
-        } else {
-            retString = retString.substring(0, i) + '0' + retString.substring(i + 1);     
-        }
+    //     if(retString[i] === '0') {
+    //         retString = retString.substring(0, i) + '1' + retString.substring(i + 1); 
+    //     } else {
+    //         retString = retString.substring(0, i) + '0' + retString.substring(i + 1);     
+    //     }
 
-    }
+    // }
     return retString;
 }// END subtractTwoBinStrings
 
@@ -684,15 +687,32 @@ BigNum.prototype.divide = function( divisor ) {
 
     if(goodInput === true) {
 
-        var ender = new BigNum(0);
-            ender.setBinString( this.getBinString() );
-        var tracker = new BigNum( div );
+        var ender   = this.getBinString(); //we only need the string for this
+        var tracker = new BigNum( 0 );
+        var answer   = ""; //just storing answer in string
 
-        while( div.compareMagnitude( ender ) < 1 ) {
-            counter.increment( ); //counter +0 starting, this works
-            div = div.add( tracker );
+
+        while(ender.length > 0) {
+            //LSB is leftmost
+            tracker.setBinString( ender[ender.length - 1] + tracker.getBinString() );
+            
+            if(div.compareMagnitude( tracker ) <= 0) {
+               
+                tracker.setBinString(
+                    this.subtractTwoBinStrings(
+                        tracker.getBinString(), div.getBinString() 
+                    )
+                );
+               
+                answer = '1' + answer;
+            } else {
+                answer = '0' + answer;
+            }
+            ender = ender.substring(0, ender.length - 1); //pop back
         }
 
+
+        counter.setBinString( answer );
         //determine negativity of number
         var negCounter = 0;
         if( this.getNegativity() === true ) { negCounter += 1; }
