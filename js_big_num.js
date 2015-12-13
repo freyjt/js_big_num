@@ -790,3 +790,40 @@ BigNum.prototype.divide = function( divisor ) {
 
     return counter;
 } //END divide 
+
+
+///@Return: -1 iff this is less
+//           0 iff this is equal
+//           1 iff this is greater
+BigNum.prototype.compare = function( numIn ) {
+
+    var goodInput = false;
+    if(typeof(numIn) === 'number' || typeof(numIn) === 'string') {
+        var comp = new BigNum( numIn );
+        goodInput = true;
+    } else if( numIn instanceof BigNum) {
+        var comp = new BigNum( );
+        comp.copy( numIn );
+        goodInput = true;
+    }
+
+    if(comp.getNegativity() === true && this.getNegativity() === true) {
+        var preComp = this.compareMagnitude( comp );
+        if( preComp === -1 ) {
+            return 1;
+        } else if( preComp === 0 ) {
+            return 0;
+        } else {
+            return -1;
+        } 
+    }
+    else if( comp.getNegativity() === false && this.getNegativity() === false) {
+        return this.compareMagnitude( comp );
+    } else {
+        if( comp.getNegativity() === false ) {
+            return -1;
+        } else {
+            return  1;
+        }
+    }
+}

@@ -75,10 +75,24 @@ function driver( ) {
     num2.convertString(-50);
     assertEqual( "0", num.add(num2).toString(), "asserting 50 + -50 == 0 with addition");
 
-    //******
+    //******SUBTRACTION
     num.convertString(50);
     num2.convertString(50);
     assertEqual("0", num.minus(num2).tostring(), "asserting 50 - 50 == 0 with subtraction");
+
+    //***COMPARISION
+    num.convertString(100);
+    num2.convertString(99);
+    assertEqual(1, num.compare(num2), "asserting 100 is greater than 99");
+    assertEqual(-1, num2.compare(num), "asserting 99 is less than 100");
+
+    //**********
+    num.convertString(-111);
+    num2.convertString(99);
+    assertEqual(-1, num.compare(num2), "asserting -111 is less than 99");
+    assertEqual(1, num2.compare(num), "asserting 99 is greater than -111");
+    assertEqual(0, num2.compare(num2), "asserting 99 is equal to 99");
+
 }
 
 driver();
