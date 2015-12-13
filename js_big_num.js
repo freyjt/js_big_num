@@ -864,3 +864,52 @@ BigNum.prototype.decrement = function( ) {
     }
     return retValue;
 }//END decrement
+
+//returns a bignum object representing the Diaphantine
+// square root of the calling BigNum object.
+// --null if the caller is negative
+BigNum.prototype.sqrt = function( ) {
+    var returnObj;
+    if( this.getNegativity() === true ) {
+        console.log("Cannot root a negative value. Returning null.");
+        returnObj = null;
+    } else {
+        //Save time by exploiting facts
+        this.trimBinString(); //make sure binString is without leading zeroes
+        var order = this.getBinString().length;
+            order = Math.ceil( order / 2 );
+        var i;
+        var builder = "";
+        for(i = 1; i < order; i++) {
+            builder += '0';
+        } builder += '1';
+        var comp = new bigNum( 0 );
+            comp.setBinString( builder );
+
+        var store      = ""; //a temp storage for the last known good string
+        var comparison = 0;
+        for(i = order - 2; i >= 0; i--) {
+            //first swap the 0 at i with 1
+            store   = comp.getBinString();
+            builder = comp.getBinString();
+            builder = builder.subString(0, i) + 1 + builder.subString(i + 1);
+            comp.setBinString( builder );
+            comp = comp.multiply( comp );
+            //then check if the new value squared is > this
+            //  break if they're the same
+            comparison = comp.compare( this );
+            if( comparison === 1 ) {
+                comp.setBinString( store );
+            } else if( comparison === 0 ) {
+                comp.setBinString( builder );
+                break;
+            } else {
+                comp.setBinString( builder );
+            }
+            
+        }
+        returnObj = comp;
+    }
+    
+    return returnObj;
+}
