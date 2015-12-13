@@ -172,6 +172,8 @@ BigNum.prototype.addTwoBinStrings = function(strOne, strTwo) {
 
 //Subtracts two binary strings of the form lsb on left
 // used as a helper in subtraction and addition
+// !!!!!!!!!!!!!!!!!!!!!!!!!!! Only works whe strOne > strTwo
+// Do not use if this is not guaranteed!!!!
 BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
     var maxLen = (strOne.length > strTwo.length) ? strOne.length : strTwo.length;
     var i = 0;
@@ -208,32 +210,30 @@ BigNum.prototype.subtractTwoBinStrings = function(strOne, strTwo) {
             remainder = 1;
         }
     } //now we ignore remainder instead of punch it on
-    
-    // uncompliment the string. 2s complement is not good for this
-    //  but, you know, it works.
-    // for(i = 0; i < retString.length; i++) {
-        
-    //     if(retString[i] === '0' ) {
-    //         retString = retString.substring(0, i) + '1' + retString.substring(i + 1);
-            
-    //     } else {
-    //         retString = retString.substring(0, i) + '0' + retString.substring(i + 1);
-    //         break;   
-    //     }
-    // } if( i === retString.length ) retString += '1'; //@TODO, look at this with fresh eyes
 
-    // for(i = 0; i < retString.length; i++) {
-        
-    //     if(retString[i] === '0') {
-    //         retString = retString.substring(0, i) + '1' + retString.substring(i + 1); 
-    //     } else {
-    //         retString = retString.substring(0, i) + '0' + retString.substring(i + 1);     
-    //     }
-
-    // }
     return retString;
 }// END subtractTwoBinStrings
 
+//returns a binary string representation of the difference of
+// to binary string representations passed in; return and input
+// have lsb in leftmost position
+BigNum.prototype.magnitudeDifference = function(strOne, strTwo) {
+
+    var larger = new BigNum( 0 );
+        larger.setBinString( strOne );
+    var lesser = new BigNum( 0 );
+        lesser.setBinString( strTwo );
+
+    //swap if lesser > larger
+    if( larger.compareMagnitude( lesser ) === -1 ) {
+        temp = larger;
+        larger = lesser;
+        lesser = temp;
+    }
+
+    return this.subtractTwoBinStrings( larger.getBinString(), lesser.getBinString() );
+
+}
 
 
 //Increase and decrease magnitude are both helper functions
@@ -513,7 +513,7 @@ BigNum.prototype.toStringBin  = function( ) {
                                                                                 
 //                                                                  GlassGiant.com
 
-//@TODO add exit on error
+
 BigNum.prototype.add = function( numberIn ) {
     var adder;
     var typePass = false;
@@ -537,7 +537,7 @@ BigNum.prototype.add = function( numberIn ) {
     return retObject;
 } //END add
 
-// @todo add exit on error
+
 // @todo, this may be the ugliest thing you've ever written
 BigNum.prototype.minus         = function( numberIn ) {
     var retObject = new BigNum(  );
@@ -554,10 +554,7 @@ BigNum.prototype.minus         = function( numberIn ) {
         console.log("Error in BigNum.minus, cannot subtract type passed");
     }
     if(typePass === true) {
-        //this is a mult thingy
-        var negAdder = 0;
-        if( this.getNegativity()       === true ) { negAdder += 1; }
-        if( subtrahend.getNegativity() === true ) { negAdder += 1; }
+
         var comp = this.compareMagnitude( subtrahend );
 
         if( this.getNegativity() === true && subtrahend.getNegativity() === true ) {
@@ -570,7 +567,7 @@ BigNum.prototype.minus         = function( numberIn ) {
                 retObject.setNegativity( false );
 
             retObject.setBinString( 
-                this.subtractTwoBinStrings(this.getBinString(), subtrahend.getBinString() ) 
+                this.magnitudeDifference(this.getBinString(), subtrahend.getBinString() ) 
             );
 
         } else if(this.getNegativity() === true && subtrahend.getNegativity() === false ) {
@@ -595,8 +592,8 @@ BigNum.prototype.minus         = function( numberIn ) {
             } else if( comp === 1 ) {// both positive, this larger --pos result
                 retObject.setNegativity( false );
             } else { retObject.setNegativity( true ); }
-            retObject.setBinString( 
-                this.subtractTwoBinStrings( this.getBinString(), subtrahend.getBinString() ) 
+            retObject.setBinString(
+                this.magnitudeDifference( this.getBinString(), subtrahend.getBinString() ) 
             );  
         }
     }
@@ -605,6 +602,8 @@ BigNum.prototype.minus         = function( numberIn ) {
     }
     return retObject;
 }
+
+
 
 //Multiply by either a string/number or a BigNum
 BigNum.prototype.multiply = function(numberIn) {
