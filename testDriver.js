@@ -118,6 +118,13 @@ function driver( ) {
     assertEqual("0", num.tostring(), "asserting result of decrementing 1 is 0");
     assertEqual(-1, num.decrement(), "asserting return of decrementing 0 is negative");
     assertEqual("-1", num.tostring(), "asserting result of decrementing 0 is -1");
+
+
+    //********Trim
+    num.convertString(3);
+    num.trimBinString();
+    assertEqual("11", num.getBinString(), "asserting trim works to take 1100 to 11");
+
 }
 
 driver();

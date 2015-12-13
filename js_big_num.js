@@ -275,7 +275,24 @@ BigNum.prototype.getNegativity = function( ) {
     return this.negative;
 }
 
+// Removes leading zeros from this.binString
+//  leaves zero if bin Magnitude is 0
+BigNum.prototype.trimBinString = function( ) {
 
+    if( this.compare( 0 ) === 0) {
+        this.setBinString( '0' );
+    } else {
+        var lastOne = 0;
+        var i;
+        var locStr = this.getBinString();
+        for(i = 0; i < locStr.length; i++) {
+            if( locStr[i] === '1' ) lastOne = i;
+        }
+        locStr = locStr.substring(0, lastOne + 1);
+        this.setBinString( locStr );
+    }
+
+} //END trimBinString
 
 //Checks an input string for validity and then sets the bin string
 // of the current objet

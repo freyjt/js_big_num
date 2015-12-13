@@ -29,8 +29,7 @@ Public methods of interest:
     <li>BigNum this.add( number/string/BigNum )</li>
     <li>BigNum this.minus( number/string/BigNum )</li>
     <li>BigNum this.multiply( number/string/BigNum )</li>
-    <li>BigNum this.divide( number/string/BigNum )<br />
-        Currently not as fast as it should be.</li>
+    <li>BigNum this.divide( number/string/BigNum )</li>
     <li>int    this.increment( )<br />
         returns -1 or 0 or 1, to indicate the negativity of the result</li>
     <li>int    this.decrement( )<br />
