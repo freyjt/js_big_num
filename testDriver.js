@@ -102,6 +102,14 @@ function driver( ) {
     assertEqual(1, num.increment(), "asserting return of inc on 0 is positive");
     assertEqual("1", num.tostring(), "asserting result of inc on 0 is 1");
 
+    ///******
+    num.convertString( 2 );
+    assertEqual(1, num.decrement(), "asserting return of decrementing 2 is postive");
+    assertEqual("1", num.tostring(), "asserting result of decrementing 2 is 1");
+    assertEqual(0, num.decrement(), "asserting return of decrementing 1 is 0");
+    assertEqual("0", num.tostring(), "asserting result of decrementing 1 is 0");
+    assertEqual(-1, num.decrement(), "asserting return of decrementing 0 is negative");
+    assertEqual("-1", num.tostring(), "asserting result of decrementing 0 is -1");
 }
 
 driver();
