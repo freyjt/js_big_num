@@ -30,6 +30,9 @@ Public methods of interest:
     <li>BigNum this.minus( number/string/BigNum )</li>
     <li>BigNum this.multiply( number/string/BigNum )</li>
     <li>BigNum this.divide( number/string/BigNum )</li>
+    <li>BigNum this.sqrt( )<br/>
+        Returns BigNum object representation of diaphantine square root<br/>
+        of this</li>
     <li>int    this.increment( )<br />
         returns -1 or 0 or 1, to indicate the negativity of the result</li>
     <li>int    this.decrement( )<br />
@@ -40,4 +43,15 @@ Public methods of interest:
         sets this to represent string or number passed</li>
     <li>void   this.copy( BigNum )<br />
         sets this to same representation as BigNum passed in</li>
+</ul>
+
+Method of operation:
+<ul>
+    <li>Stores number in string of 0s 1s, lsb is leftmost bit</li>
+    <li>Negativity is a bool attached to the object<br/>
+        true = negative<br/>
+        false = non-negative</li>
+    <li>Using strings means all operations are done with<br/>
+        string operations. Strings are immutable. This<br/>
+        is slower than need be, but fairly straightforward to read</li>
 </ul>
