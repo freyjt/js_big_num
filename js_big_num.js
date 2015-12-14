@@ -953,3 +953,56 @@ BigNum.prototype.pow = function(powerIn) {
 
     return retObject;
 } //END pow
+
+BigNum.prototype.genRt = function( rootIn ) {
+
+    var returnObj;
+    if( this.getNegativity() === true ) {
+        console.log("Cannot root a negative value in BigNum.genRt(). Returning null.");
+        returnObj = null;
+    } else if( typeof(rootIn) !== 'number' ){
+
+
+    } else if(this.compare(0) !== 0) {
+        //Save time by exploiting facts
+        this.trimBinString(); //make sure binString is without leading zeroes
+
+        //Roots higher than two will always be smaller than x^two
+        var order = this.getBinString().length;
+        var order = Math.ceil(order / 2);
+        var i;
+        var builder = "";
+        for(i = 0; i < order; i++) {
+            builder += '0';
+        } 
+        var comp = new BigNum( 0 );
+            comp.setBinString( builder );
+
+        var store      = ""; //a temp storage for the last known good string
+        var comparison = 0;
+        for(i = order - 1; i >= 0; i--) {
+            //first swap the 0 at i with 1
+            store   = comp.getBinString();
+            builder = comp.getBinString();
+            builder = builder.substring(0, i) + 1 + builder.substring(i + 1);
+            comp.setBinString( builder );
+            comp = comp.pow( rootIn );
+            //then check if the new value squared is > this
+            //  break if they're the same
+            comparison = comp.compare( this );
+            if( comparison === 1 ) {
+                comp.setBinString( store );
+            } else if( comparison === 0 ) {
+                comp.setBinString( builder );
+                break;
+            } else {
+                comp.setBinString( builder );
+            }
+        }
+        returnObj = comp;
+    } else {
+        returnObj = new BigNum(0);
+    }
+
+    return returnObj;
+}
