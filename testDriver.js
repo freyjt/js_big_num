@@ -141,6 +141,17 @@ function driver( ) {
     assertEqual(null, num.pow(-5), "asserting that 3^-5 returns null");
     assertEqual("1", num.pow(0).toString(), "asserting that 3^0 returns obj. 1");
     assertEqual("3", num.pow(1).toString(), "asserting that 3^1 returns obj 3");
+
+    num.convertString(9);
+    assertEqual("3", num.genrt(2).toString(), "asserting that 2nd root of 9 is 3");
+    num.convertString(27);
+    assertEqual("3", num.genrt(3).toString(), "asserting that the 3rd root of 27 is 3");
+    num.convertString(81);
+    assertEqual("3", num.genrt(4).toString(), "asserting that the 4th root of 81 is 3");
+    num.convertString(0);
+    assertEqual("0", num.genrt(534).toString(), "asserting that the 534th root of 0 is 0");
+    num.convertString("393992829030");
+    assertEqual(null, num.genrt(0), "Asserting that the 0th root of 393992829030 is undefined");
 }
 
 driver();

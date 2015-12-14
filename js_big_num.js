@@ -954,19 +954,27 @@ BigNum.prototype.pow = function(powerIn) {
     return retObject;
 } //END pow
 
-BigNum.prototype.genRt = function( rootIn ) {
+BigNum.prototype.genrt = function( rootIn ) {
 
     var returnObj;
     if( this.getNegativity() === true ) {
         console.log("Cannot root a negative value in BigNum.genRt(). Returning null.");
         returnObj = null;
     } else if( typeof(rootIn) !== 'number' ){
-
-
+        console.log("Error, must pass a number argument to BigNum.genrt() Returning null.");
+        returnObj = null;
+    } else if( rootIn <= 0) {
+        console.log("Error, cannot take non-positive roots with BigNum.genrt(). Returning null.");
+        returnObj = null;
     } else if(this.compare(0) !== 0) {
+
+        if(Math.floor(rootIn) != rootIn) {
+            console.log("Warning BigNum.genrt() is not equipped for fractional roots. Truncating");
+            rootIn = Math.floor(rootIn);
+        }
+
         //Save time by exploiting facts
         this.trimBinString(); //make sure binString is without leading zeroes
-
         //Roots higher than two will always be smaller than x^two
         var order = this.getBinString().length;
         var order = Math.ceil(order / 2);
