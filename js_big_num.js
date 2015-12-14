@@ -914,3 +914,26 @@ BigNum.prototype.sqrt = function( ) {
 
     return returnObj;
 }
+
+BigNum.prototype.pow = function(powerIn) {
+
+    var retObject;
+    var type = typeof(powerIn);
+    if( type !== 'number' ) {
+        console.log( "Can only accept number argument to BigNum.pow(). Returning null");
+        retObject = null;
+    } else if(powerIn === 0) { 
+        retObject = new BigNum(1);
+    } else if( powerIn === 1) {
+        retObject = new BigNum();
+        retObject.copy(this);
+    } else {
+        retObject = new BigNum();
+        retObject.copy( this );
+        var i;
+        for(i = 0; i < powerIn; i++) {
+            retObject = retObject.multiply( retObject );
+        }
+    }
+    return retObject;
+}
