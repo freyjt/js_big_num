@@ -33,6 +33,9 @@ Public methods of interest:
     <li>BigNum this.sqrt( )<br/>
         Returns BigNum object representation of diaphantine square root<br/>
         of this</li>
+    <li>BigNum this.genrt( numberIn )<br/>
+        Returns a BigNum object representation of the diaphantine root<br/>
+        given by number in ex. num.genrt(3) would return 3 if num is 27</li>
     <li>int    this.increment( )<br />
         returns -1 or 0 or 1, to indicate the negativity of the result</li>
     <li>int    this.decrement( )<br />
@@ -54,4 +57,15 @@ Method of operation:
     <li>Using strings means all operations are done with<br/>
         string operations. Strings are immutable. This<br/>
         is slower than need be, but fairly straightforward to read</li>
+</ul>
+
+Going forward:
+<ul>
+    <li>Many methods could be faster</li>
+    <li>The general layout has many helper methods<br/>
+        that are either redundant or not the smoothest<br/>
+        transition/name. Should clean this up</li>
+    <li>I'd like to write a wrapper for genrt()<br/>
+        that returns an object including whether the root<br/>
+        is perfect or approximate</li>
 </ul>
