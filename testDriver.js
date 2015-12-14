@@ -134,6 +134,13 @@ function driver( ) {
     assertEqual("0", num.sqrt().toString(), "asserting that sqrt(0) == 0");
     num.convertString( -5 );
     assertEqual(null, num.sqrt(), "asserting that sqrt(-#) returns null");
+
+    //**********pow
+    num.convertString(3);
+    assertEqual("9", num.pow(2).toString(), "asserting that 3^2 is 9");
+    assertEqual(null, num.pow(-5), "asserting that 3^-5 returns null");
+    assertEqual("1", num.pow(0).toString(), "asserting that 3^0 returns obj. 1");
+    assertEqual("3", num.pow(1).toString(), "asserting that 3^1 returns obj 3");
 }
 
 driver();

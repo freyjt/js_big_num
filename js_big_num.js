@@ -871,7 +871,7 @@ BigNum.prototype.decrement = function( ) {
 BigNum.prototype.sqrt = function( ) {
     var returnObj;
     if( this.getNegativity() === true ) {
-        console.log("Cannot root a negative value. Returning null.");
+        console.log("Cannot root a negative value in BigNum.sqrt(). Returning null.");
         returnObj = null;
     } else if(this.compare(0) !== 0) {
         //Save time by exploiting facts
@@ -923,13 +923,17 @@ BigNum.prototype.pow = function(powerIn) {
     var type = typeof(powerIn);
 
     if( type !== 'number' ) {
-        console.log( "Can only accept number argument to BigNum.pow(). Returning null");
+        console.log( "Error: Can only accept number argument to BigNum.pow(). Returning null");
+        retObject = null;
+    } else if( powerIn < 0) {
+        console.log("Error: Can only accept non-negative values to BigNum.pow(). Returning null.");
         retObject = null;
     } else {
+
         if(Math.floor(powerIn) != powerIn) {
             console.log("Warning, non-integer passed to bigNum.pow() truncating argument.");
             powerIn = Math.floor(powerIn);
-        } 
+        }
 
         if(powerIn === 0) { 
             retObject = new BigNum(1);
@@ -939,9 +943,10 @@ BigNum.prototype.pow = function(powerIn) {
         } else {
             retObject = new BigNum();
             retObject.copy( this );
+
             var i;
-            for(i = 0; i < powerIn; i++) {
-                retObject = retObject.multiply( retObject );
+            for(i = 1; i < powerIn; i++) {
+                retObject = retObject.multiply( this );
             }
         }
     } 
