@@ -30,9 +30,6 @@ function driver( ) {
     num2.convertString( 0 );
     assertEqual("0", num.multiply(num2).toString(), "asserting -10 * 0 = 0");
     
-
-
-
     //*******DIVISION
     num.convertString( "-25" );
     num2.convertString( "5" );

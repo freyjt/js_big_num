@@ -958,6 +958,8 @@ BigNum.prototype.genrt = function( rootIn ) {
 
     var returnObj;
     if( this.getNegativity() === true ) {
+
+        //@TODO Allow to root - w/ 0dd, make sure number check comes before this one
         console.log("Cannot root a negative value in BigNum.genRt(). Returning null.");
         returnObj = null;
     } else if( typeof(rootIn) !== 'number' ){
@@ -1013,4 +1015,36 @@ BigNum.prototype.genrt = function( rootIn ) {
     }
 
     return returnObj;
+}
+
+//Returns an informative object with the root
+// of this
+BigNum.prototype.rootInfo = function( rootIn ) {
+    var retObject;
+    var myRoot = this.genrt( rootIn );
+    if(myRoot !== null) {
+        var closestInt = new BigNum();
+            closestInt.copy(myRoot);
+        var i;
+        for(i = 1; i < rootIn; i++) {
+            closestInt.multiply(myRoot);
+        }
+        var difference = new BigNum();
+            difference.setBinString( 
+                this.magnitudeDifference( 
+                    this.getBinString(), closestInt.getBinString( )
+                )
+            );
+            //@todo, make difference understand negativity of answer
+            difference.setNegativity( false );
+        var isPerfect = (difference.compare(0) === 0) ? true : false;
+        retObject = { root: myRoot,
+            order: rootIn,
+            precision: difference,
+            perfection: isPerfect
+        };
+    } else {
+        retObject = null;
+    }
+    return retObject;
 }

@@ -25,7 +25,7 @@ Public methods of interest:
     <li>string this.toString()</li>
     <li>string this.tostring() (alias for above)</li>
     <li>string this.toStringBin()<br />
-        string in binary with MSB in rightmost place</li>
+        string in binary with MSB in leftmost place</li>
     <li>BigNum this.add( number/string/BigNum )</li>
     <li>BigNum this.minus( number/string/BigNum )</li>
     <li>BigNum this.multiply( number/string/BigNum )</li>
