@@ -967,6 +967,9 @@ BigNum.prototype.genrt = function( rootIn ) {
     } else if( rootIn <= 0) {
         console.log("Error, cannot take non-positive roots with BigNum.genrt(). Returning null.");
         returnObj = null;
+    } else if( rootIn === 1) {
+        returnObj = new BigNum();
+        returnObj.copy( this );
     } else if(this.compare(0) !== 0) {
 
         if(Math.floor(rootIn) != rootIn) {

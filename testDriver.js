@@ -174,6 +174,8 @@ function driver( ) {
     assertEqual(null, rootFacts, "Asserting that 2nd root of -23 is null with rootInfo");
     rootFacts = num.rootInfo(1);
     assertEqual("-23", rootFacts.root.toString(), "Asserting that the 1st root of -23 is -23 with rootInfo");
+    assertEqual("-23", num.toString(), "Asserting that assigned number is returned by toString()");
+    assertEqual("-23", num.genrt(1).tostring(), "Asserting that the 1st root of -23 is -23 with genrt");
 }
 
 driver();
