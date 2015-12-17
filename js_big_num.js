@@ -954,6 +954,10 @@ BigNum.prototype.pow = function(powerIn) {
     return retObject;
 } //END pow
 
+
+// Finds a General root to this.
+// Will return null on any root with a complex answer
+//  or any given a non-integer order
 BigNum.prototype.genrt = function( rootIn ) {
 
     var returnObj;
@@ -1019,10 +1023,14 @@ BigNum.prototype.genrt = function( rootIn ) {
     }
 
     return returnObj;
-}
+} //END genrt
 
 //Returns an informative object with the root
 // of this
+//  root:  The root,
+//  order: the number passed in; the specified root,
+//  precision: The difference between this and the closest integer multiple of the root,
+//  perfection: whether the root is a perfect one.
 BigNum.prototype.rootInfo = function( rootIn ) {
     var retObject;
     var myRoot = this.genrt( rootIn );
@@ -1055,4 +1063,4 @@ BigNum.prototype.rootInfo = function( rootIn ) {
         retObject = null;
     }
     return retObject;
-}
+} //End rootInfo

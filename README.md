@@ -4,6 +4,9 @@ A javaScript object handling arbitrarily large integers accounting
 
 To use:
 <ul>
+    <li>This document lists the methods designed to be used publicly.<br/>
+        testDriver.js also has all of these being used in a test context.<br/>
+        Taken together these should inform the use of the object.</li>
     <li>require the file</li>
     <li>create a new object
         <ul>
