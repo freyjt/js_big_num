@@ -36,6 +36,12 @@ Public methods of interest:
     <li>BigNum this.genrt( numberIn )<br/>
         Returns a BigNum object representation of the diaphantine root<br/>
         given by number in ex. num.genrt(3) would return 3 if num is 27</li>
+    <li>object this.rootInfo( numberIn )<br />
+        Returns an object containing information about a general root of<br/>
+        this. Form: { root: BigNum the root, <br/>
+        order: number order of root, <br/>
+        precision: BigNum diff. from the closest integer multiple of this, <br/>
+        perfection: bool true if root is perfect to this }</li>
     <li>int    this.increment( )<br />
         returns -1 or 0 or 1, to indicate the negativity of the result</li>
     <li>int    this.decrement( )<br />
