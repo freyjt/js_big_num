@@ -168,6 +168,12 @@ function driver( ) {
     assertEqual(false, rootFacts.perfection, "Asserting that the 2nd root of 18 is not perfect.");
     assertEqual("2", rootFacts.precision.tostring(), "Asserting that the precision of 2nd root of 18 is 2.");
     assertEqual("2", rootFacts.order.toString(), "Asserting that order of 2nd root is 2.");
+
+    num.convertString( -23 );
+    rootFacts = num.rootInfo(2);
+    assertEqual(null, rootFacts, "Asserting that 2nd root of -23 is null with rootInfo");
+    rootFacts = num.rootInfo(1);
+    assertEqual("-23", rootFacts.root.toString(), "Asserting that the 1st root of -23 is -23 with rootInfo");
 }
 
 driver();
