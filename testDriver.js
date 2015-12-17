@@ -149,6 +149,10 @@ function driver( ) {
     assertEqual("0", num.genrt(534).toString(), "asserting that the 534th root of 0 is 0");
     num.convertString("393992829030");
     assertEqual(null, num.genrt(0), "Asserting that the 0th root of 393992829030 is undefined");
+
+    num.convertString(-27);
+    assertEqual("-3", num.genrt(3).tostring(), "Asserting that the 3rd root of -27 is -3")
+
 }
 
 driver();

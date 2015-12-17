@@ -957,10 +957,9 @@ BigNum.prototype.pow = function(powerIn) {
 BigNum.prototype.genrt = function( rootIn ) {
 
     var returnObj;
-    if( this.getNegativity() === true ) {
-
+    if( this.getNegativity() === true && rootIn % 2 === 0) {
         //@TODO Allow to root - w/ 0dd, make sure number check comes before this one
-        console.log("Cannot root a negative value in BigNum.genRt(). Returning null.");
+        console.log("Cannot even-root a negative value in BigNum.genRt(). Returning null.");
         returnObj = null;
     } else if( typeof(rootIn) !== 'number' ){
         console.log("Error, must pass a number argument to BigNum.genrt() Returning null.");
@@ -999,7 +998,7 @@ BigNum.prototype.genrt = function( rootIn ) {
             comp = comp.pow( rootIn );
             //then check if the new value squared is > this
             //  break if they're the same
-            comparison = comp.compare( this );
+            comparison = comp.compareMagnitude( this );
             if( comparison === 1 ) {
                 comp.setBinString( store );
             } else if( comparison === 0 ) {
@@ -1009,7 +1008,9 @@ BigNum.prototype.genrt = function( rootIn ) {
                 comp.setBinString( builder );
             }
         }
+
         returnObj = comp;
+        returnObj.setNegativity( this.getNegativity() );
     } else {
         returnObj = new BigNum(0);
     }
@@ -1035,14 +1036,17 @@ BigNum.prototype.rootInfo = function( rootIn ) {
                     this.getBinString(), closestInt.getBinString( )
                 )
             );
-            //@todo, make difference understand negativity of answer
+            
             difference.setNegativity( false );
+        
         var isPerfect = (difference.compare(0) === 0) ? true : false;
+        
         retObject = { root: myRoot,
             order: rootIn,
             precision: difference,
             perfection: isPerfect
         };
+
     } else {
         retObject = null;
     }
