@@ -153,6 +153,21 @@ function driver( ) {
     num.convertString(-27);
     assertEqual("-3", num.genrt(3).tostring(), "Asserting that the 3rd root of -27 is -3")
 
+    var rootFacts = num.rootInfo( 2 );
+    assertEqual(null, rootFacts, "Asserting that the 2nd root of -27 is null")
+    num.convertString( 16 );
+    rootFacts = num.rootInfo( 2 );
+    assertEqual("4", rootFacts.root.toString(), "Asserting that the 2nd root of 16 is 4 with rootInfo");
+    assertEqual(true, rootFacts.perfection, "Asserting that 4 is perfect second root of 16 with rootInfo");
+    assertEqual("0", rootFacts.precision.tostring(), "Asserting that precision of 2nd root of 16 is 0 with rootInfo");
+    assertEqual("2", rootFacts.order.toString(), "Asserting that order of 2nd root is 2.");
+
+    num.convertString( 18 );
+    rootFacts = num.rootInfo( 2 );
+    assertEqual("4", rootFacts.root.toString(), "Asserting that the 2nd root of 18 is 4 with rootinfo.");
+    assertEqual(false, rootFacts.perfection, "Asserting that the 2nd root of 18 is not perfect.");
+    assertEqual("2", rootFacts.precision.tostring(), "Asserting that the precision of 2nd root of 18 is 2.");
+    assertEqual("2", rootFacts.order.toString(), "Asserting that order of 2nd root is 2.");
 }
 
 driver();

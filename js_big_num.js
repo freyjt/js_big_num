@@ -1028,7 +1028,7 @@ BigNum.prototype.rootInfo = function( rootIn ) {
             closestInt.copy(myRoot);
         var i;
         for(i = 1; i < rootIn; i++) {
-            closestInt.multiply(myRoot);
+            closestInt = closestInt.multiply(myRoot);
         }
         var difference = new BigNum();
             difference.setBinString( 
@@ -1041,9 +1041,10 @@ BigNum.prototype.rootInfo = function( rootIn ) {
         
         var isPerfect = (difference.compare(0) === 0) ? true : false;
         
-        retObject = { root: myRoot,
-            order: rootIn,
-            precision: difference,
+        retObject = { 
+            root:       myRoot,
+            order:      rootIn,
+            precision:  difference,
             perfection: isPerfect
         };
 
