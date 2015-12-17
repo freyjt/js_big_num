@@ -174,8 +174,15 @@ function driver( ) {
     assertEqual(null, rootFacts, "Asserting that 2nd root of -23 is null with rootInfo");
     rootFacts = num.rootInfo(1);
     assertEqual("-23", rootFacts.root.toString(), "Asserting that the 1st root of -23 is -23 with rootInfo");
+    //***Segue to trace source of bug
     assertEqual("-23", num.toString(), "Asserting that assigned number is returned by toString()");
     assertEqual("-23", num.genrt(1).tostring(), "Asserting that the 1st root of -23 is -23 with genrt");
+    //Back to rootInfo
+    rootFacts = num.rootInfo(1);
+    assertEqual(1, rootFacts.order, "Asserting that rootInfo.order is 1 when 1st root found");
+    assertEqual("0", rootFacts.precision.toString(), "Asserting that 1st root precision of -23 is 0 with rootInfo");
+    assertEqual(true, rootFacts.perfection, "Asserting that 1st root of -23 is perfect");
+
 }
 
 driver();
