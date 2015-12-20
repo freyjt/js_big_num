@@ -25,39 +25,42 @@ To use:
 
 Public methods of interest:
 <ul>
-    <li>string this.toString()</li>
-    <li>string this.tostring() (alias for above)</li>
-    <li>string this.toStringBin()<br />
+    <li><strong>string this.toString()</strong></li>
+    <li><strong>string this.tostring()</strong> (alias for above)</li>
+    <li><strong>string this.toStringBin()</strong><br />
         string in binary with MSB in leftmost place</li>
-    <li>BigNum this.add( number/string/BigNum )</li>
-    <li>BigNum this.minus( number/string/BigNum )</li>
-    <li>BigNum this.multiply( number/string/BigNum )</li>
-    <li>BigNum this.divide( number/string/BigNum )</li>
-    <li>BigNum this.sqrt( )<br/>
+    <li><strong>BigNum this.add( number/string/BigNum )</strong></li>
+    <li><strong>BigNum this.minus( number/string/BigNum )</strong></li>
+    <li><strong>BigNum this.multiply( number/string/BigNum )</strong></li>
+    <li><strong>BigNum this.divide( number/string/BigNum )</strong></li>
+    <li><strong>BigNum this.sqrt( )<br/>
         Returns BigNum object representation of diaphantine square root<br/>
         of this</li>
-    <li>BigNum this.genrt( numberIn )<br/>
+    <li><strong>BigNum this.genrt( numberIn )</strong><br/>
         Returns a BigNum object representation of the diaphantine root<br/>
         given by number in ex. num.genrt(3) would return 3 if num is 27</li>
-    <li>object this.rootInfo( numberIn )<br />
+    <li><strong>object this.rootInfo( numberIn )</strong><br />
         Returns an object containing information about a general root of<br/>
         this. Form: { root: BigNum the root, <br/>
         order: number order of root, <br/>
         precision: BigNum diff. from the closest integer multiple of this, <br/>
         perfection: bool true if root is perfect to this }</li>
-    <li>int    this.increment( )<br />
+    <li><strong>int    this.increment( )</strong><br />
         returns -1 or 0 or 1, to indicate the negativity of the result</li>
-    <li>int    this.decrement( )<br />
-        see increment.
-    <li>int    this.compare(number/string/Bignum)<br />
-        returns -1 or 0 or 1, 1 if this is larger than comparator</li>
-    <li>void   this.convertString( number/string )<br />
-        sets this to represent string or number passed</li>
-    <li>void   this.copy( BigNum )<br />
-        sets this to same representation as BigNum passed in</li>
-    <li>BigNum this.digitSum( )<br/>
+    <li><strong>int    this.decrement( )</strong><br />
+        see increment.</li>
+    <li><strong>BigNum this.factorial( )</strong><br/>
+        Returns a BigNum representation of the factorial of the magnitude of This</li>
+    <li><strong>BigNum this.digitSum( )</strong><br/>
         Sums all the digits of this (in <em>DECIMAL</em>) then returns<br/>
         the result as a BigNum objects</li>
+    <li><strong>int    this.compare(number/string/Bignum)</strong><br />
+        returns -1 or 0 or 1, 1 if this is larger than comparator</li>
+    <li><strong>void   this.convertString( number/string )</strong><br />
+        sets this to represent string or number passed</li>
+    <li><strong>void   this.copy( BigNum )</strong><br />
+        sets this to same representation as BigNum passed in</li>
+
 </ul>
 
 Method of operation:
