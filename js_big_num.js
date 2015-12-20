@@ -69,10 +69,18 @@ BigNum.prototype.convertString = function( stringIn ) {
         this.setNegativity( true );
         stringIn = stringIn.substring(1);
 
-        //@TODO: NO PARSEINT
-        if(parseInt( stringIn ) === 0 ) {
-            this.setNegativity( false );
+    
+    var isZero = true;
+    var i;
+    for(i = 0; i < stringIn.length; i++) {
+        if( parseInt(stringIn[i]) !== 0) {
+            isZero = false;
+            break;
         }
+    }
+    if( isZero === true ) {
+        this.setNegativity( false );
+    }
     } else {
         this.negative = false;
     }

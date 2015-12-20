@@ -74,7 +74,4 @@ Going forward:
     <li>The general layout has many helper methods<br/>
         that are either redundant or not the smoothest<br/>
         transition/name. Should clean this up</li>
-    <li>I'd like to write a wrapper for genrt()<br/>
-        that returns an object including whether the root<br/>
-        is perfect or approximate</li>
 </ul>
