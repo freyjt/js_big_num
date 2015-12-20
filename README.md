@@ -55,6 +55,9 @@ Public methods of interest:
         sets this to represent string or number passed</li>
     <li>void   this.copy( BigNum )<br />
         sets this to same representation as BigNum passed in</li>
+    <li>BigNum this.digitSum( )<br/>
+        Sums all the digits of this (in <em>DECIMAL</em>) then returns<br/>
+        the result as a BigNum objects</li>
 </ul>
 
 Method of operation:
