@@ -418,12 +418,14 @@ BigNum.prototype.toString = function( ) {
 
     //@Note to self: keep in lsb left until
     // end, then flip it around
+    //This is absurd. need to keep track at current bit
     function getDecString( mag ) {
         // 3 layers.
         function doubleDec( str ) {
             var ret = addDecStrings( str, str);
             return ret;
         }
+
         var k;   //keeping it real
         var bigVal = '2'; //doubler
         if( mag === 0 ) { returner = '1'; }
@@ -475,15 +477,16 @@ BigNum.prototype.toString = function( ) {
     var strings = []; 
     var bin     = this.getBinString();
     var i;
-    var pusher = "";
+    var pusher = "1";
     //@TODO, this can have extraordinary memory 
     //  usage for particularly large number
     //  you can do better.
     for(i = 0; i < bin.length; i++) {
         if(bin[i] === '1') {
-            pusher = getDecString( i );
+            //pusher = getDecString( i );
             strings.push( pusher );
         }
+        pusher = addDecStrings( pusher, pusher);
     }
     var added = "0"; //print zero strings
     //@TODO this can grow logarithmically
