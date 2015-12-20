@@ -404,40 +404,23 @@ BigNum.prototype.compareMagnitude = function( numberIn ) {
                                                                                 
 //                                                                  GlassGiant.com
 
-
+//Alias toString because you can't remember which
+// one jS uses, even though your syntax highlighter
+// is telling you right there.
 BigNum.prototype.tostring = function( ) {
     return this.toString();
-}
+} //END tostring();
 
 //Print this object as a decimal string;
 BigNum.prototype.toString = function( ) {
+
+    //@Note to self: keep lsb left until
+    // end, then flip it around
+
     //returns string representation
     // of decimal value of a single bit
     // to a given magnitude
     // ONLY call when
-
-    //@Note to self: keep in lsb left until
-    // end, then flip it around
-    //This is absurd. need to keep track at current bit
-    function getDecString( mag ) {
-        // 3 layers.
-        function doubleDec( str ) {
-            var ret = addDecStrings( str, str);
-            return ret;
-        }
-
-        var k;   //keeping it real
-        var bigVal = '2'; //doubler
-        if( mag === 0 ) { returner = '1'; }
-        else {
-            for(k = 1; k < mag; k++) {
-                bigVal = doubleDec( bigVal );
-
-            }
-            returner = bigVal;
-        }
-        return returner;
-    }
     function addDecStrings( one, two) {
         var remainder = 0;
         var maxLen    = (one.length > two.length)?one.length:two.length;
@@ -486,6 +469,8 @@ BigNum.prototype.toString = function( ) {
             //pusher = getDecString( i );
             strings.push( pusher );
         }
+
+        //double the decimal string each new bit
         pusher = addDecStrings( pusher, pusher);
     }
     var added = "0"; //print zero strings

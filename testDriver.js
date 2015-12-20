@@ -191,7 +191,11 @@ function driver( ) {
     assertEqual("39916800", num.factorial().toString(), "Asserting that large factorials are correct.");
 
     //huge factorial to test tostring speedup
-    num.convertString( 99 );
+    //comment out for reg tests
+        // num.convertString( 1500 );
+        // num = num.factorial();
+        // console.log("Finished factorializing");
+        // console.log( num.tostring());
 }
 
 driver();
