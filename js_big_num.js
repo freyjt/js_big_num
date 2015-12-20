@@ -418,7 +418,6 @@ BigNum.prototype.toString = function( ) {
 
     //@Note to self: keep in lsb left until
     // end, then flip it around
-    getDecString(5);
     function getDecString( mag ) {
         // 3 layers.
         function doubleDec( str ) {
@@ -477,6 +476,9 @@ BigNum.prototype.toString = function( ) {
     var bin     = this.getBinString();
     var i;
     var pusher = "";
+    //@TODO, this can have extraordinary memory 
+    //  usage for particularly large number
+    //  you can do better.
     for(i = 0; i < bin.length; i++) {
         if(bin[i] === '1') {
             pusher = getDecString( i );
