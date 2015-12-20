@@ -1074,3 +1074,18 @@ BigNum.prototype.rootInfo = function( rootIn ) {
     }
     return retObject;
 } //End rootInfo
+
+
+//Returns the sum of the dec. digits in the form of a bigNum
+BigNum.prototype.digitSum = function() {
+
+    var returner  = new BigNum(0);
+    var stringRep = this.toString();
+    var i;
+    for(i = 0; i < stringRep.length; i++) {
+        returner = returner.add( parseInt(stringRep[i]) );
+    } 
+
+    return returner;
+
+} //END digitSum
