@@ -33,7 +33,7 @@ Public methods of interest:
     <li><strong>BigNum this.minus( number/string/BigNum )</strong></li>
     <li><strong>BigNum this.multiply( number/string/BigNum )</strong></li>
     <li><strong>BigNum this.divide( number/string/BigNum )</strong></li>
-    <li><strong>BigNum this.sqrt( )<br/>
+    <li><strong>BigNum this.sqrt( )</strong><br/>
         Returns BigNum object representation of diaphantine square root<br/>
         of this</li>
     <li><strong>BigNum this.genrt( numberIn )</strong><br/>
