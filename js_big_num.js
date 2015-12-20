@@ -1092,3 +1092,23 @@ BigNum.prototype.digitSum = function() {
     return returner;
 
 } //END digitSum
+
+
+//Returns BigNum representation of this MAGNITUDE (for simplicity, I'm tired
+// and doing it correctly requires more reading than I'm willing @todo atm) factorial
+BigNum.prototype.factorial = function( ) {
+    var retObj = new BigNum( );
+    if( this.compare(0) === 0) {
+        retObject.convertString( 1 );
+    } else{
+        retObj.copy( this );
+        retObj.setNegativity( false );
+        var trackObj = new BigNum();
+            trackObj.copy( this );
+            trackObj.setNegativity( false );
+        while( trackObj.decrement() === 1) {
+            retObj = retObj.multiply( trackObj);
+        }
+    }
+    return retObj;
+} //END factorial

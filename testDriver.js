@@ -183,6 +183,15 @@ function driver( ) {
     assertEqual("0", rootFacts.precision.toString(), "Asserting that 1st root precision of -23 is 0 with rootInfo");
     assertEqual(true, rootFacts.perfection, "Asserting that 1st root of -23 is perfect");
 
+
+    //Factorial
+    num.convertString( 5 );
+    assertEqual( "120", num.factorial().toString(), "Asserting that 5 factorial is 125");
+    num.convertString( 11 );
+    assertEqual("39916800", num.factorial().toString(), "Asserting that large factorials are correct.");
+
+    //huge factorial to test tostring speedup
+    num.convertString( 99 );
 }
 
 driver();
