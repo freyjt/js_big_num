@@ -1108,14 +1108,20 @@ BigNum.prototype.factorial = function( ) {
 //@TODO account for negativity
 // return number of modulus( unless we accept a BigNum, we can return number)
 // @input number
+//@TODO if you want to use this in isPrime, it needs to be able to handle BigNum input
+//  and output a bigNum
+// ??? we could write one that returns true/false, situations where we want something
+//   else are rareish for your use cases
 BigNum.prototype.modulus = function( modIn ) {
     retNumber = 0;
-    if( modIn < 0 ) {
+    if( typeof(modIn) === 'number' && modIn < 0) {
         console.log( "Cannot take negative modulus yet. Making positive");
         modIn = 0 - modIn;
-    } else if( modIn == 0) {
+    } else if( modIn instanceof BigNum && modIn.getNegativity === true) {
+        console.log( "Cannot take negative modulus yet. Making positive");
+        modIn.setNegativity( false );
+    } else if( (typeof(modIn) === 'number' && modIn == 0) || (modIn instanceof BigNum && modIn.compare(0) === 0) ) {
         console.log("Error, cannot take the modulus against 0. Why are you trying to do this to me.");
-
     } else {
         //get a copy of this and make sure it's positive
         var tracker = new BigNum()
@@ -1128,9 +1134,8 @@ BigNum.prototype.modulus = function( modIn ) {
 
         //get difference and convert back to number
         var mod     = tracker.minus( divisor );
-            mod     = parseInt( mod.toString() );
-
-            retNumber =  mod;
+        
+        retNumber =  mod;
     }
     return retNumber;
 }
@@ -1138,6 +1143,8 @@ BigNum.prototype.modulus = function( modIn ) {
 //Return true or false depending on if this is prime
 BigNum.prototype.isPrime = function( ) {
 
+    var retBool = true;
+    if(this.modulus(2) == 0) { retBool = false;}
     var root = this.sqrt() + 1;
 
 } //END isPrime
