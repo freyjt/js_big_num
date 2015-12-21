@@ -730,7 +730,6 @@ BigNum.prototype.multiply = function(numberIn) {
 //Integer division
 BigNum.prototype.divide = function( divisor ) {
 
-    var trueCounter = 0;
     var counter     = new BigNum( 0 ); //return objcet
 
     var goodInput   = false;
@@ -1153,33 +1152,8 @@ BigNum.prototype.factorial = function( ) {
 // return number of modulus( unless we accept a BigNum, we can return number)
 // @input number/bigNum
 BigNum.prototype.modulus = function( divisor ) {
-    // retNumber = 0;
-    // if( typeof(modIn) === 'number' && modIn < 0) {
-    //     console.log( "Cannot take negative modulus yet. Making positive");
-    //     modIn = 0 - modIn;
-    // } else if( modIn instanceof BigNum && modIn.getNegativity === true) {
-    //     console.log( "Cannot take negative modulus yet. Making positive");
-    //     modIn.setNegativity( false );
-    // } else if( (typeof(modIn) === 'number' && modIn == 0) || (modIn instanceof BigNum && modIn.compare(0) === 0) ) {
-    //     console.log("Error, cannot take the modulus against 0. Why are you trying to do this to me.");
-    // } else {
-    //     //get a copy of this and make sure it's positive
-    //     var tracker = new BigNum()
-    //         tracker.copy( this );
-    //         tracker.setNegativity( false );
 
-    //     //get the closest integer multiple of modIn
-    //     var divisor = tracker.divide( modIn );
-    //         divisor = divisor.multiply( modIn );
 
-    //     //get difference and convert back to number
-    //     var mod     = tracker.minus( divisor );
-
-    //     retNumber   =  mod;
-    // }
-    // return retNumber;
-
-    var trueCounter = 0;
     var counter     = new BigNum( 0 ); //return objcet
 
     var goodInput   = false;
@@ -1221,7 +1195,6 @@ BigNum.prototype.modulus = function( divisor ) {
             ender = ender.substring(0, ender.length - 1); //pop back
         }
 
-
         counter.setBinString( tracker.getBinString() );
         //determine negativity of number
         var negCounter = 0;
@@ -1239,7 +1212,7 @@ BigNum.prototype.modulus = function( divisor ) {
     }
 
     return counter;
-}
+} //END modulus
 
 //Return true or false depending on if this is prime
 // @TODO, really need to speed this up with this.PrimeList
@@ -1257,7 +1230,7 @@ BigNum.prototype.isPrime = function( ) {
         if( root > largePrime || typeof(largePrime) === 'undefined') {
             this.extendPrimeList( root );
         }
-        // console.log("largestPrime: " + this.primeList[ this.primeList.length - 1] + " Root: " + root);
+        
         var i;
         for(i = 0; i < this.primeList.length && this.primeList[i].compare(root) <= 0; i++) {
 
