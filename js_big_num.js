@@ -1152,32 +1152,93 @@ BigNum.prototype.factorial = function( ) {
 //@TODO account for negativity
 // return number of modulus( unless we accept a BigNum, we can return number)
 // @input number/bigNum
-BigNum.prototype.modulus = function( modIn ) {
-    retNumber = 0;
-    if( typeof(modIn) === 'number' && modIn < 0) {
-        console.log( "Cannot take negative modulus yet. Making positive");
-        modIn = 0 - modIn;
-    } else if( modIn instanceof BigNum && modIn.getNegativity === true) {
-        console.log( "Cannot take negative modulus yet. Making positive");
-        modIn.setNegativity( false );
-    } else if( (typeof(modIn) === 'number' && modIn == 0) || (modIn instanceof BigNum && modIn.compare(0) === 0) ) {
-        console.log("Error, cannot take the modulus against 0. Why are you trying to do this to me.");
-    } else {
-        //get a copy of this and make sure it's positive
-        var tracker = new BigNum()
-            tracker.copy( this );
-            tracker.setNegativity( false );
+BigNum.prototype.modulus = function( divisor ) {
+    // retNumber = 0;
+    // if( typeof(modIn) === 'number' && modIn < 0) {
+    //     console.log( "Cannot take negative modulus yet. Making positive");
+    //     modIn = 0 - modIn;
+    // } else if( modIn instanceof BigNum && modIn.getNegativity === true) {
+    //     console.log( "Cannot take negative modulus yet. Making positive");
+    //     modIn.setNegativity( false );
+    // } else if( (typeof(modIn) === 'number' && modIn == 0) || (modIn instanceof BigNum && modIn.compare(0) === 0) ) {
+    //     console.log("Error, cannot take the modulus against 0. Why are you trying to do this to me.");
+    // } else {
+    //     //get a copy of this and make sure it's positive
+    //     var tracker = new BigNum()
+    //         tracker.copy( this );
+    //         tracker.setNegativity( false );
 
-        //get the closest integer multiple of modIn
-        var divisor = tracker.divide( modIn );
-            divisor = divisor.multiply( modIn );
+    //     //get the closest integer multiple of modIn
+    //     var divisor = tracker.divide( modIn );
+    //         divisor = divisor.multiply( modIn );
 
-        //get difference and convert back to number
-        var mod     = tracker.minus( divisor );
+    //     //get difference and convert back to number
+    //     var mod     = tracker.minus( divisor );
 
-        retNumber   =  mod;
+    //     retNumber   =  mod;
+    // }
+    // return retNumber;
+
+    var trueCounter = 0;
+    var counter     = new BigNum( 0 ); //return objcet
+
+    var goodInput   = false;
+    //@TODO, this validation is in 3 methods so far.
+    //  stop being a dummy ...also it needs to be more robust
+    if(typeof(divisor) === 'number' || typeof(divisor) === 'string') {
+        var div = new BigNum( divisor );
+        goodInput = true;
+    } else if( divisor instanceof BigNum) {
+        var div = new BigNum( );
+        div.copy( divisor );
+        goodInput = true;
     }
-    return retNumber;
+
+    if( div.compareMagnitude( 0 ) === 0 ) {
+        goodInput = false;
+    }
+
+    if(goodInput === true) {
+
+        var ender   = this.getBinString(); //we only need the string for this
+        var tracker = new BigNum( 0 );
+        var answer   = ""; //just storing answer in string
+
+
+        while(ender.length > 0) {
+            //LSB is leftmost
+            tracker.setBinString( ender[ender.length - 1] + tracker.getBinString() );
+            
+            if(div.compareMagnitude( tracker ) <= 0) {
+               
+                tracker.setBinString(
+                    this.subtractTwoBinStrings(
+                        tracker.getBinString(), div.getBinString() 
+                    )
+                );
+               
+            } 
+            ender = ender.substring(0, ender.length - 1); //pop back
+        }
+
+
+        counter.setBinString( tracker.getBinString() );
+        //determine negativity of number
+        var negCounter = 0;
+        if( this.getNegativity() === true ) { negCounter += 1; }
+        if( div.getNegativity()  === true ) { negCounter += 1; }
+        if( negCounter % 2 === 0 ) {
+            counter.setNegativity( false );
+        } else {
+            counter.setNegativity( true  );
+        }
+        
+    } else {
+        console.log( "Unable to mod in BigNum.modulus, returning null");
+        counter = null;
+    }
+
+    return counter;
 }
 
 //Return true or false depending on if this is prime
