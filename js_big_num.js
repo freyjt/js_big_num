@@ -1189,7 +1189,7 @@ BigNum.prototype.isPrime = function( ) {
             root.increment();
         var largePrime = this.primeList[this.primeList.length - 1]
         if( root > largePrime || typeof(largePrime) === 'undefined') {
-            this.extendPrimeList( root );
+            this.extendPrimeList( this );
         }
         // console.log("largestPrime: " + this.primeList[ this.primeList.length - 1] + " Root: " + root);
         var i;
