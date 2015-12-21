@@ -195,6 +195,10 @@ function driver( ) {
     num.convertString( 5 );
     assertEqual("1", num.modulus(2).tostring(), "Asserting that the modulus 2 of 5 is 1");
     assertEqual("0", num.modulus(5).tostring(), "Asserting that the modulus 5 of 5 is 0");
+    num2.convertString( 4 );
+    assertEqual("1", num.modulus(num2).tostring(), "Asserting that the modulus 4 of 5 is 1");
+    num2.convertString( 1 );
+    assertEqual("0", num.modulus(num2).toString(), "Asserting that the modulus 1 of 5 is 0");
     //huge factorial to test tostring speedup
     //comment out for reg tests
         // num.convertString( 1500 );

@@ -1107,11 +1107,7 @@ BigNum.prototype.factorial = function( ) {
 
 //@TODO account for negativity
 // return number of modulus( unless we accept a BigNum, we can return number)
-// @input number
-//@TODO if you want to use this in isPrime, it needs to be able to handle BigNum input
-//  and output a bigNum
-// ??? we could write one that returns true/false, situations where we want something
-//   else are rareish for your use cases
+// @input number/bigNum
 BigNum.prototype.modulus = function( modIn ) {
     retNumber = 0;
     if( typeof(modIn) === 'number' && modIn < 0) {
@@ -1134,8 +1130,8 @@ BigNum.prototype.modulus = function( modIn ) {
 
         //get difference and convert back to number
         var mod     = tracker.minus( divisor );
-        
-        retNumber =  mod;
+
+        retNumber   =  mod;
     }
     return retNumber;
 }
