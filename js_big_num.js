@@ -146,7 +146,33 @@ BigNum.prototype.convertString = function( stringIn ) {
  //                                                                 GlassGiant.com
 
 
-BigNum.prototype.primeList = []; //a sweet 
+BigNum.prototype.primeList = [ new BigNum(2), new BigNum(3) ]; //initiate this to first odd prime
+//Locate and append to primeList all primes less than or equal to a given value
+BigNum.prototype.extendPrimeList = function( numIn ) {
+    var LLength        = this.primeList.length - 1;
+    var nextPrimeCheck = this.primeList[LLength];
+
+    while( nextPrimeCheck.compare( numIn ) <= 0) {
+        //find the next prime number
+        var nextPrimeCheck = nextPrimeCheck.add(2);
+        var rootPrimeCheck = nexPrimeCheck.sqrt();
+            rootPrimeCheck.increment();
+        //we can do this the slow way because we only ever have to do it once
+        // per number....still not optimized, but better
+        var modder = new BigNum(3);
+        var primeFound = true;
+        while( modder.compare( rootPrimeCheck) <= 0) {
+            if(nextPrimeCheck.modulus.compare(0) === 0 ) {
+                primeFound = false;
+                break;
+            }
+            modder = modder.add(2);
+        } if( primeFound === true ) {
+            this.primeList.push( nextPrimeCheck );
+            LLength = this.primeList.length - 1;
+        }
+    }
+} //END extendPrimeList
 
 //Adds two binary numbers with lsb in leftmost place (like this.binString)
 // used as a helper in multiplication and addition
@@ -1148,6 +1174,9 @@ BigNum.prototype.isPrime = function( ) {
         var modder = new BigNum( 3 );
         var root   = this.sqrt()
             root.increment();
+        if( root > this.primeList[this.primeList.length - 1] ){
+            this.extendPrimeList( root );
+        }
         while( modder.compare(root) <= 0) {
             
             if( this.modulus( modder ).compare( 0 ) === 0) {

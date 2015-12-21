@@ -28,7 +28,8 @@ Public methods of interest:
     <li><strong>string this.toString()</strong></li>
     <li><strong>string this.tostring()</strong> (alias for above)</li>
     <li><strong>string this.toStringBin()</strong><br />
-        string in binary with MSB in leftmost place</li>
+        string in binary with MSB in leftmost place<br/>
+        negative sign rather than sign bit</li>
     <li><strong>BigNum this.add( number/string/BigNum )</strong></li>
     <li><strong>BigNum this.minus( number/string/BigNum )</strong></li>
     <li><strong>BigNum this.multiply( number/string/BigNum )</strong></li>
