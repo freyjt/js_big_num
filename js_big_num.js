@@ -146,9 +146,17 @@ BigNum.prototype.convertString = function( stringIn ) {
  //                                                                 GlassGiant.com
 
 
-BigNum.prototype.primeList = [ new BigNum(2), new BigNum(3) ]; //initiate this to first odd prime
+BigNum.prototype.primeList = new Array( ); 
+
 //Locate and append to primeList all primes less than or equal to a given value
 BigNum.prototype.extendPrimeList = function( numIn ) {
+    
+    if( this.primeList.length === 0) {
+        // make sure we initiate this to first odd prime
+        this.primeList.push( new BigNum(2) );
+        this.primeList.push( new BigNum(3) );
+    }
+
     var LLength        = this.primeList.length - 1;
     var nextPrimeCheck = this.primeList[LLength];
 
@@ -1177,16 +1185,26 @@ BigNum.prototype.isPrime = function( ) {
         if( root > this.primeList[this.primeList.length - 1] ){
             this.extendPrimeList( root );
         }
-        while( modder.compare(root) <= 0) {
+        // while( modder.compare(root) <= 0) {
             
-            if( this.modulus( modder ).compare( 0 ) === 0) {
+        //     if( this.modulus( modder ).compare( 0 ) === 0) {
 
+        //         retBool = false;
+        //         break;
+
+        //     }
+
+        //     modder = modder.add( 2 )
+        // }
+        var i;
+        for(i = 0; i < this.primeList.length; i++) {
+            if( this.modulus( this.primeList[i] ).compare(0) === 0) {
                 retBool = false;
                 break;
-
             }
-
-            modder = modder.add( 2 )
+            if( this.primeList[i].compare( root ) == 1) {
+                break;
+            }
         }
     }
     return retBool;
