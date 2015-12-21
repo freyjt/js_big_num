@@ -171,7 +171,10 @@ BigNum.prototype.extendPrimeList = function( numIn ) {
         var i = 1;
         var modder = this.primeList[i++];
         var primeFound = true;
-        while( modder.compare( rootPrimeCheck) <= 0) {
+
+        // console.log(rootPrimeCheck.tostring());
+        while( modder.compare( rootPrimeCheck ) <= 0) {
+            
             if(nextPrimeCheck.modulus(modder).compare(0) === 0 ) {
                 primeFound = false;
                 break;
@@ -180,7 +183,9 @@ BigNum.prototype.extendPrimeList = function( numIn ) {
             // reach end of list because rootPrimecheck is based on
             // last value in list
             modder = this.primeList[i++];
+            
         } if( primeFound === true ) {
+                // console.log(nextPrimeCheck.toString());
             this.primeList.push( nextPrimeCheck );
             LLength = this.primeList.length - 1;
         }
@@ -1186,10 +1191,10 @@ BigNum.prototype.isPrime = function( ) {
     else {
         var modder = new BigNum( 3 );
         var root   = this.sqrt()
-            root.increment();
+            // root.increment();
         var largePrime = this.primeList[this.primeList.length - 1]
         if( root > largePrime || typeof(largePrime) === 'undefined') {
-            this.extendPrimeList( this );
+            this.extendPrimeList( root );
         }
         // console.log("largestPrime: " + this.primeList[ this.primeList.length - 1] + " Root: " + root);
         var i;
