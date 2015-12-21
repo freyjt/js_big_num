@@ -164,17 +164,22 @@ BigNum.prototype.extendPrimeList = function( numIn ) {
         //find the next prime number
         var nextPrimeCheck = nextPrimeCheck.add(2);
         var rootPrimeCheck = nextPrimeCheck.sqrt();
-            rootPrimeCheck.increment();
+           // rootPrimeCheck.increment();
         //we can do this the slow way because we only ever have to do it once
-        // per number....still not optimized, but better
-        var modder = new BigNum(3);
+        // per number....still not optimized, but better...not good. @TODO fix it.
+        //this.primeList[1] is 3. start at 3
+        var i = 1;
+        var modder = this.primeList[i++];
         var primeFound = true;
         while( modder.compare( rootPrimeCheck) <= 0) {
             if(nextPrimeCheck.modulus(modder).compare(0) === 0 ) {
                 primeFound = false;
                 break;
             }
-            modder = modder.add(2);
+            //set modder to next value in list. Will never
+            // reach end of list because rootPrimecheck is based on
+            // last value in list
+            modder = this.primeList[i++];
         } if( primeFound === true ) {
             this.primeList.push( nextPrimeCheck );
             LLength = this.primeList.length - 1;
