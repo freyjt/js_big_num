@@ -150,7 +150,7 @@ BigNum.prototype.primeList = new Array( );
 
 //Locate and append to primeList all primes less than or equal to a given value
 BigNum.prototype.extendPrimeList = function( numIn ) {
-    
+
     if( this.primeList.length === 0) {
         // make sure we initiate this to first odd prime
         this.primeList.push( new BigNum(2) );
@@ -163,14 +163,14 @@ BigNum.prototype.extendPrimeList = function( numIn ) {
     while( nextPrimeCheck.compare( numIn ) <= 0) {
         //find the next prime number
         var nextPrimeCheck = nextPrimeCheck.add(2);
-        var rootPrimeCheck = nexPrimeCheck.sqrt();
+        var rootPrimeCheck = nextPrimeCheck.sqrt();
             rootPrimeCheck.increment();
         //we can do this the slow way because we only ever have to do it once
         // per number....still not optimized, but better
         var modder = new BigNum(3);
         var primeFound = true;
         while( modder.compare( rootPrimeCheck) <= 0) {
-            if(nextPrimeCheck.modulus.compare(0) === 0 ) {
+            if(nextPrimeCheck.modulus(modder).compare(0) === 0 ) {
                 primeFound = false;
                 break;
             }
@@ -1182,29 +1182,19 @@ BigNum.prototype.isPrime = function( ) {
         var modder = new BigNum( 3 );
         var root   = this.sqrt()
             root.increment();
-        if( root > this.primeList[this.primeList.length - 1] ){
+        var largePrime = this.primeList[this.primeList.length - 1]
+        if( root > largePrime || typeof(largePrime) === 'undefined') {
             this.extendPrimeList( root );
         }
-        // while( modder.compare(root) <= 0) {
-            
-        //     if( this.modulus( modder ).compare( 0 ) === 0) {
-
-        //         retBool = false;
-        //         break;
-
-        //     }
-
-        //     modder = modder.add( 2 )
-        // }
+        // console.log("largestPrime: " + this.primeList[ this.primeList.length - 1] + " Root: " + root);
         var i;
-        for(i = 0; i < this.primeList.length; i++) {
+        for(i = 0; i < this.primeList.length && this.primeList[i].compare(root) <= 0; i++) {
+
             if( this.modulus( this.primeList[i] ).compare(0) === 0) {
                 retBool = false;
                 break;
             }
-            if( this.primeList[i].compare( root ) == 1) {
-                break;
-            }
+
         }
     }
     return retBool;
