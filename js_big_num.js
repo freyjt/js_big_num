@@ -146,6 +146,8 @@ BigNum.prototype.convertString = function( stringIn ) {
  //                                                                 GlassGiant.com
 
 
+BigNum.prototype.primeList = []; //a sweet 
+
 //Adds two binary numbers with lsb in leftmost place (like this.binString)
 // used as a helper in multiplication and addition
 // *ignores negativity as these strings do not have sign bits
@@ -552,6 +554,10 @@ BigNum.prototype.add = function( numberIn ) {
     return retObject;
 } //END add
 
+//Aliasing minus
+BigNum.prototype.subtract = function( numberIn ) {
+    return this.minus( numberIn );
+}//END subtract
 
 // @todo, this may be the ugliest thing you've ever written
 BigNum.prototype.minus         = function( numberIn ) {
@@ -1097,3 +1103,41 @@ BigNum.prototype.factorial = function( ) {
     }
     return retObj;
 } //END factorial
+
+
+//@TODO account for negativity
+// return number of modulus( unless we accept a BigNum, we can return number)
+// @input number
+BigNum.prototype.modulus = function( modIn ) {
+    retNumber = 0;
+    if( modIn < 0 ) {
+        console.log( "Cannot take negative modulus yet. Making positive");
+        modIn = 0 - modIn;
+    } else if( modIn == 0) {
+        console.log("Error, cannot take the modulus against 0. Why are you trying to do this to me.");
+
+    } else {
+        //get a copy of this and make sure it's positive
+        var tracker = new BigNum()
+            tracker.copy( this );
+            tracker.setNegativity( false );
+
+        //get the closest integer multiple of modIn
+        var divisor = tracker.divide( modIn );
+            divisor = divisor.multiply( modIn );
+
+        //get difference and convert back to number
+        var mod     = tracker.minus( divisor );
+            mod     = parseInt( mod.toString() );
+
+            retNumber =  mod;
+    }
+    return retNumber;
+}
+
+//Return true or false depending on if this is prime
+BigNum.prototype.isPrime = function( ) {
+
+    var root = this.sqrt() + 1;
+
+} //END isPrime

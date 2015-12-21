@@ -190,6 +190,11 @@ function driver( ) {
     num.convertString( 11 );
     assertEqual("39916800", num.factorial().toString(), "Asserting that large factorials are correct.");
 
+
+    //Modulus
+    num.convertString( 5 );
+    assertEqual(1, num.modulus(2), "Asserting that the modulus 2 of 5 is 1");
+    assertEqual(0, num.modulus(5), "Asserting that the modulus 5 of 5 is 0");
     //huge factorial to test tostring speedup
     //comment out for reg tests
         // num.convertString( 1500 );

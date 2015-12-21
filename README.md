@@ -67,7 +67,7 @@ Method of operation:
 <ul>
     <li>Stores number in string of 0s 1s, lsb is leftmost bit</li>
     <li>Negativity is a bool attached to the object<br/>
-        true = negative<br/>
+        true  = negative<br/>
         false = non-negative</li>
     <li>Using strings means all operations are done with<br/>
         string operations. Strings are immutable. This<br/>
