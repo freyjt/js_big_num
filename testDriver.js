@@ -199,6 +199,13 @@ function driver( ) {
     assertEqual("1", num.modulus(num2).tostring(), "Asserting that the modulus 4 of 5 is 1");
     num2.convertString( 1 );
     assertEqual("0", num.modulus(num2).toString(), "Asserting that the modulus 1 of 5 is 0");
+
+
+    //Isprime
+    num.convertString( 5 );
+    assertEqual(true, num.isPrime(), "Asserting that 5 is prime");
+    num.convertString( 25 );
+    assertEqual(false, num.isPrime(), "Asserting that 25 is not prime");
     //huge factorial to test tostring speedup
     //comment out for reg tests
         // num.convertString( 1500 );

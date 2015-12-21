@@ -1137,10 +1137,29 @@ BigNum.prototype.modulus = function( modIn ) {
 }
 
 //Return true or false depending on if this is prime
+// @TODO, really need to speed this up with this.PrimeList
+//  if we want to check biiiig numbers
 BigNum.prototype.isPrime = function( ) {
 
     var retBool = true;
-    if(this.modulus(2) == 0) { retBool = false;}
-    var root = this.sqrt() + 1;
+    if(this.compare(1) === 0) { retBool = false; }
+    else if(this.modulus(2).compare( 0 ) === 0) { retBool = true; }
+    else {
+        var modder = new BigNum( 3 );
+        var root   = this.sqrt()
+            root.increment();
+        while( modder.compare(root) <= 0) {
+            
+            if( this.modulus( modder ).compare( 0 ) === 0) {
+
+                retBool = false;
+                break;
+
+            }
+
+            modder = modder.add( 2 )
+        }
+    }
+    return retBool;
 
 } //END isPrime
