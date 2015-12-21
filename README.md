@@ -51,6 +51,11 @@ Public methods of interest:
         see increment.</li>
     <li><strong>BigNum this.factorial( )</strong><br/>
         Returns a BigNum representation of the factorial of the magnitude of This</li>
+    <li><strong>BigNum this.modulus( number/bigNum )</strong><br/>
+        Returns BigNum of the modulus of order given by parameter.<br/>
+        *doesn't handle negative modulus yet.</li>
+    <li><strong>BigNum this.isPrime( )</strong><br/>
+        Returns bool of the primality of this (true is prime, false not)</li>
     <li><strong>BigNum this.digitSum( )</strong><br/>
         Sums all the digits of this (in <em>DECIMAL</em>) then returns<br/>
         the result as a BigNum objects</li>
