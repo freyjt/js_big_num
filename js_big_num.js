@@ -164,7 +164,7 @@ BigNum.prototype.extendPrimeList = function( numIn ) {
         //find the next prime number
         var nextPrimeCheck = nextPrimeCheck.add(2);
         var rootPrimeCheck = nextPrimeCheck.sqrt();
-           // rootPrimeCheck.increment();
+            rootPrimeCheck.increment();
         //we can do this the slow way because we only ever have to do it once
         // per number....still not optimized, but better...not good. @TODO fix it.
         //this.primeList[1] is 3. start at 3
@@ -1215,8 +1215,7 @@ BigNum.prototype.modulus = function( divisor ) {
 } //END modulus
 
 //Return true or false depending on if this is prime
-// @TODO, really need to speed this up with this.PrimeList
-//  if we want to check biiiig numbers
+//@todo, there's a bug in this that is returning true on non-primes
 BigNum.prototype.isPrime = function( ) {
 
     var retBool = true;
@@ -1225,7 +1224,7 @@ BigNum.prototype.isPrime = function( ) {
     else {
         var modder = new BigNum( 3 );
         var root   = this.sqrt()
-            // root.increment();
+            root.increment();
         var largePrime = this.primeList[this.primeList.length - 1]
         if( root > largePrime || typeof(largePrime) === 'undefined') {
             this.extendPrimeList( root );
@@ -1244,3 +1243,4 @@ BigNum.prototype.isPrime = function( ) {
     return retBool;
 
 } //END isPrime
+
