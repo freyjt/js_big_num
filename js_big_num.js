@@ -1218,14 +1218,16 @@ BigNum.prototype.isPrime = function( ) {
     else if (this.compare( 2 ) === 0) { retBool = true;  }
     else {
         var modder = new BigNum( 3 );
-        var root   = this.sqrt()
-        var largePrime = this.primeList[this.primeList.length - 1]
-        if( root > largePrime || typeof(largePrime) === 'undefined') {
+        var root   = this.sqrt();
+      
+        var largePrime = this.primeList[ this.primeList.length - 1 ];
+       
+        if( typeof(largePrime) === 'undefined' || root.compare( largePrime ) === 1 ) {
             this.extendPrimeList( root );
         }
         
         var i;
-        for(i = 0; i < this.primeList.length && this.primeList[i].compare(root) <= 0; i++) {
+        for(i = 0; i < this.primeList.length && this.primeList[i].compare( root ) <= 0; i++) {
 
             if( this.modulus( this.primeList[i] ).compare(0) === 0) {
                 retBool = false;
