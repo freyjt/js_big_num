@@ -211,7 +211,8 @@ function driver( ) {
     assertEqual(true, num.isPrime(), "Asserting that 179424691 is prime");
     num.convertString("179424693");
     assertEqual(false, num.isPrime(), "Asserting that 179424693 is not prime");
-
+    num.convertString( 2 );
+    assertEqual(true, num.isPrime(), "Asserting that 2 is prime");
     //huge factorial to test tostring speedup
     //comment out for reg tests
         // num.convertString( 1500 );
